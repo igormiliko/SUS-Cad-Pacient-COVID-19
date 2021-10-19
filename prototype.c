@@ -82,9 +82,9 @@ int user_count = 0;
 struct Pacient
 {	
 		char nome[60];
-		char age[2];
-		char height[4];
-		char weight[4];
+		int age;
+		float height;
+		float weight;
 		char cns[40];
 		char consult_data[11];
 		char COVID_19[2];
@@ -378,20 +378,19 @@ int cadastrar_paciente()
 
 
 			printf("Idade: ");
-			scanf("%s", pacient_SUS[pacient_count].age);
+			scanf("%d", &pacient_SUS[pacient_count].age);
 			printf("\n");
 
 		printf("CNS (Cartão Nacional de Saúde): ");
 		scanf("%s", pacient_SUS[pacient_count].cns);
 		printf("\n");
-		
-		
+	
 			printf("Altura em metros: ");
-			scanf("%s", pacient_SUS[pacient_count].height);
+			scanf("%f", &pacient_SUS[pacient_count].height);
 			printf("\n");
-
+			
 			printf("Peso em quilogramas: ");
-			scanf("%s", pacient_SUS[pacient_count].weight);
+			scanf("%f", &pacient_SUS[pacient_count].weight);
 			printf("\n");
 
 		// Alghoritimo para confirmar se o usuário digitou a data no formato correto
@@ -474,19 +473,21 @@ int pesquisar_paciente()
 
 	printf("|------------------ PESQUISAR PACIENTE -----------------|\n\n");
 	printf("Digite o número correspondente ao modo de pesquisa:\n\n");
-	printf("1- Por nome    2- Por CNS   \n\n");
+	printf("1- Por nome    2- Por CNS   3- Por resultado de COVID-19\n\n");
+	printf("4- Voltar\n\n");
 	
 	do{
 		printf("Digite o número correspondente à ação: ");
 		scanf("%s", program_action);
 		printf("\n");
-		confirm_type_program_action = strcmp(program_action, "1") == 0 || strcmp(program_action, "2") == 0 ? 0 : 1;
+		confirm_type_program_action = strcmp(program_action, "1") == 0 || strcmp(program_action, "2") ||
+									  strcmp(program_action, "3") == 0 || strcmp(program_action, "4") ? 0 : 1;
 	}while(confirm_type_program_action == 1);
 	
 	if(strcmp(program_action, "1") == 0)
 	{
-		char name_to_search[60];
-		name_to_search[60] = malloc(60 * sizeof(char));
+		char *name_to_search;
+		name_to_search = malloc(60 * sizeof(char));
 		int finding_pacient;
 		int pacient_finded_ix = -1;
 
@@ -514,24 +515,23 @@ int pesquisar_paciente()
 		{
 			printf("NOME: %s\n", pacient_SUS[pacient_finded_ix].nome);
 			printf("CNS: %s\n", pacient_SUS[pacient_finded_ix].cns);
-			printf("IDADE: %s\n", pacient_SUS[pacient_finded_ix].age);
-			printf("ALTURA: %sm\n", pacient_SUS[pacient_finded_ix].height);
-			printf("PESO: %skg\n", pacient_SUS[pacient_finded_ix].weight);
+			printf("IDADE: %d\n", pacient_SUS[pacient_finded_ix].age);
+			printf("ALTURA: %.2fm\n", pacient_SUS[pacient_finded_ix].height);
+			printf("PESO: %.2fkg\n", pacient_SUS[pacient_finded_ix].weight);
 			printf("DATA DA CONSULTA: %s\n", pacient_SUS[pacient_finded_ix].consult_data);
 			printf("CONTATO COM INFECTADO? %s\n", pacient_SUS[pacient_finded_ix].last_week_contact);
 			printf("RESULTADO COVID-19: %s\n\n", pacient_SUS[pacient_finded_ix].COVID_19);
 		}
 	}
-	else
+	else if (strcmp(program_action, "2") == 0)
 	{
 		char cns_to_search[40];
-		cns_to_search[40] = malloc(40 * sizeof(char));
 		int finding_pacient;
 		int pacient_finded_ix = -1;
 
 
 		printf("Digite o CNS do paciente: ");
-		ler_string(cns_to_search, 40);
+		scanf("%s",cns_to_search);
 		printf("\n");
 
 		for(int i = 0; i < pacient_count; i++)
@@ -541,6 +541,7 @@ int pesquisar_paciente()
 			{
 				pacient_finded_ix = i;
 			}
+			
 		}
 		if(pacient_finded_ix == -1)
 		{
@@ -553,16 +554,25 @@ int pesquisar_paciente()
 		{
 			printf("NOME: %s\n", pacient_SUS[pacient_finded_ix].nome);
 			printf("CNS: %s\n", pacient_SUS[pacient_finded_ix].cns);
-			printf("IDADE: %s\n", pacient_SUS[pacient_finded_ix].age);
-			printf("ALTURA: %s\n", pacient_SUS[pacient_finded_ix].height);
-			printf("PESO: %s\n", pacient_SUS[pacient_finded_ix].weight);
+			printf("IDADE: %d\n", pacient_SUS[pacient_finded_ix].age);
+			printf("ALTURA: %.2fm\n", pacient_SUS[pacient_finded_ix].height);
+			printf("PESO: %.2fkg\n", pacient_SUS[pacient_finded_ix].weight);
 			printf("DATA DA CONSULTA: %s\n", pacient_SUS[pacient_finded_ix].consult_data);
 			printf("CONTATO COM INFECTADO? %s\n", pacient_SUS[pacient_finded_ix].last_week_contact);
 			printf("RESULTADO COVID-19: %s\n\n", pacient_SUS[pacient_finded_ix].COVID_19);
 		}
 
 	}
-	return 0;
+	else if (strcmp(program_action, "3") == 0)
+	{
+		printf("Pesquisar por COVID-19\n");
+	}
+
+	else if (strcmp(program_action, "4") == 0)
+	{
+		return 1;
+	}
+	return 2;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -587,14 +597,10 @@ int main(void) {
 		{	
 
 			to_cycle = log_in(&logged_user);
-			//to_cycle = 2;
+			to_cycle = 2;
 
 			if(to_cycle == 2) 
 			{
-				do{
-					char program_action[1];
-					int confirm_type_program_action;
-
 					printf("___________________________________________\n");
 					printf("                                           \n");
 					printf(" NOME: %s         ", cad_user[logged_user].nick_name);
@@ -607,6 +613,14 @@ int main(void) {
 						printf("  CRE: %s\n", cad_user[logged_user].CRE);
 					}
 					printf("___________________________________________\n\n");
+				do{
+					printf("          _____________________________________________________\n");
+					printf("         |                                                     |\n");
+					printf("         |    Sistema de cadastro e pesquisa  de pacientes     |\n");
+					printf("         |_____________________________________________________|\n\n");
+					char program_action[1];
+					int confirm_type_program_action;
+
 					
 					
 					printf("Escolha uma das opções do programa e digite o seu número correspondente: \n\n ");
@@ -626,9 +640,11 @@ int main(void) {
 						to_cycle = 1;
 					}
 					else if(strcmp(program_action, "2") == 0)
-					{
-						pesquisar_paciente();
-						to_cycle = 1;
+					{	
+						do
+						{
+							to_cycle = pesquisar_paciente();
+						}while(to_cycle == 2);
 					}
 					else
 					{
