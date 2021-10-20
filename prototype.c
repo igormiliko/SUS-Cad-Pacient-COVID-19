@@ -305,7 +305,7 @@ int log_in(int *user_id)
 	char user_name[60];
 	char user_password[8];
 
-	int user_name_in_DB;
+	int user_name_in_DB = 1;
 	int user_password_correct;
 
 	int user_to_compare_password;
@@ -565,7 +565,85 @@ int pesquisar_paciente()
 	}
 	else if (strcmp(program_action, "3") == 0)
 	{
-		printf("Pesquisar por COVID-19\n");
+		char covid_result;
+		int confirm_right_type;
+		int count_result = 0;
+
+		do
+		{
+			printf("Digite + (sinal de adição) para listar pacientes com resultado positivo ou \n");
+			printf("digite - (sinal de subtração) para listar os pacientes com resultado negativo: -> ");
+			scanf("%s", &covid_result);
+			printf("\n");
+			confirm_right_type = strcmp(&covid_result, "+") == 0 || strcmp(&covid_result, "-") == 0 ? 0 : 1;
+		} while (confirm_right_type == 1);
+
+		if(strcmp(&covid_result, "+") == 0)
+		{
+			printf("          ___________________________________________\n");
+			printf("         |                                           |\n");
+			printf("         |    Pacientes com resultados positivos     |\n");
+			printf("         |___________________________________________|\n\n");
+			for(int i = 0; i < pacient_count; i++)
+			{
+				if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+				{
+					printf("%d- Nome do paciente: %s", i + 1, pacient_SUS[i].nome);
+					printf("    Resultado: %s\n\n", pacient_SUS[i].COVID_19);
+					count_result++;
+				}
+			}
+			if(count_result > 0)
+			{
+				printf("______________________________________________________________\n");
+				printf("                                                              \n");
+				printf("  Total de pacientes positivos para COVID-19 encontrados: %d  \n", count_result);
+				printf("______________________________________________________________\n\n");
+			}
+			else
+			{
+				printf("          _____________________________________________\n");
+				printf("         |                                             |\n");
+				printf("         |    Não foi encontrado nenhum paciente com   |\n");
+				printf("         |    resultado  positivo  para COVID-19  na   |\n");
+				printf("         |                base de dados.               |\n");
+				printf("         |_____________________________________________|\n\n");
+			}
+		}
+
+		else if(strcmp(&covid_result, "-") == 0)
+		{
+			printf("          ___________________________________________\n");
+			printf("         |                                           |\n");
+			printf("         |    Pacientes com resultados negativos     |\n");
+			printf("         |___________________________________________|\n\n");
+			for(int i = 0; i < pacient_count; i++)
+			{
+				if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+				{
+					printf("%d- Nome do paciente: %s", i + 1, pacient_SUS[i].nome);
+					printf("    Resultado: %s\n\n", pacient_SUS[i].COVID_19);
+					count_result++;
+				}
+			}
+			if(count_result > 0)
+			{
+				printf("______________________________________________________________\n");
+				printf("                                                              \n");
+				printf("  Total de pacientes neagtivos para COVID-19 encontrados: %d  \n", count_result);
+				printf("______________________________________________________________\n\n");
+			}
+			else
+			{
+				printf("          _____________________________________________\n");
+				printf("         |                                             |\n");
+				printf("         |    Não foi encontrado nenhum paciente com   |\n");
+				printf("         |    resultado  negativo  para COVID-19  na   |\n");
+				printf("         |                base de dados.               |\n");
+				printf("         |_____________________________________________|\n\n");
+			}
+		}	
+		
 	}
 
 	else if (strcmp(program_action, "4") == 0)
@@ -576,6 +654,14 @@ int pesquisar_paciente()
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////    PESQUIAR PACIENTE    /////////////////////////////////
+
+int calculos_estatisticos() 
+{
+	printf("Implementar calculos estatisticos\n\n");
+	return 1;
+}
 
 int main(void) {
 	
@@ -597,7 +683,7 @@ int main(void) {
 		{	
 
 			to_cycle = log_in(&logged_user);
-			to_cycle = 2;
+			//to_cycle = 2;
 
 			if(to_cycle == 2) 
 			{
@@ -625,12 +711,13 @@ int main(void) {
 					
 					printf("Escolha uma das opções do programa e digite o seu número correspondente: \n\n ");
 					printf("1- Cadastrar paciente com COVID-19    2- Pesquisar paciente com COVID-19\n\n");
-					printf(" 3- Sair\n\n");
+					printf(" 3- Cálculos estatísticos              4- Sair\n\n");
 					
 					do{
 						printf("Digite o número: ");
 						scanf("%s", program_action);
-						confirm_type_program_action = strcmp(program_action, "1") == 0 || strcmp(program_action, "2") == 0 || strcmp(program_action, "3") == 0 ? 0 : 1;
+						confirm_type_program_action = strcmp(program_action, "1") == 0 || strcmp(program_action, "2") == 0 || 
+													  strcmp(program_action, "3") == 0 || strcmp(program_action, "4") == 0 ? 0 : 1;
 					}while(confirm_type_program_action == 1);
 
 
@@ -646,10 +733,21 @@ int main(void) {
 							to_cycle = pesquisar_paciente();
 						}while(to_cycle == 2);
 					}
-					else
+					else if(strcmp(program_action, "3") == 0)
+					{
+						do
+						{
+							to_cycle = calculos_estatisticos();
+						} while (to_cycle == 2);					
+					}
+					else if(strcmp(program_action, "4") == 0)
 					{
 						printf("Sair\n");
 						to_cycle = 0;
+					}
+					else
+					{
+						to_cycle = 1;
 					}
 
 				}while(to_cycle == 1);
@@ -659,4 +757,3 @@ int main(void) {
 	}while(to_cycle == 0);
 	
 }
-
