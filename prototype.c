@@ -381,9 +381,9 @@ int cadastrar_paciente()
 			scanf("%d", &pacient_SUS[pacient_count].age);
 			printf("\n");
 
-			printf("CNS (Cartão Nacional de Saúde): ");
-			scanf("%s", pacient_SUS[pacient_count].cns);
-			printf("\n");
+		printf("CNS (Cartão Nacional de Saúde): ");
+		scanf("%s", pacient_SUS[pacient_count].cns);
+		printf("\n");
 	
 			printf("Altura em metros: ");
 			scanf("%f", &pacient_SUS[pacient_count].height);
