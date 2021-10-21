@@ -1,5 +1,5 @@
 # SUS-Cad-Pacient-COVID-19
-## Academic work to the UNIP, in the Analysis and System Developmetn course, second period.
+## Academic work to the UNIP, in the Analysis and System Development course, second period.
 
    The SUS-Cad-Pacient-COVID-19 are a fictitious system to help the Brazilian System health 
   to register the patient wich have COVID-19 or no.
