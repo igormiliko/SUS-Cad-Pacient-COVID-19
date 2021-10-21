@@ -190,7 +190,7 @@ static int sign_in()
 		}while(strlen(cad_user[user_count].estado) != 2);
 
 		printf("Qual o município onde você trabalha? ");
-		scanf("%s", cad_user[user_count].municipio);
+		ler_string(cad_user[user_count].municipio,30);
 		printf("\n");
 
 		printf("Qual sua unidade de saúde? ");
@@ -381,9 +381,9 @@ int cadastrar_paciente()
 			scanf("%d", &pacient_SUS[pacient_count].age);
 			printf("\n");
 
-		printf("CNS (Cartão Nacional de Saúde): ");
-		scanf("%s", pacient_SUS[pacient_count].cns);
-		printf("\n");
+			printf("CNS (Cartão Nacional de Saúde): ");
+			scanf("%s", pacient_SUS[pacient_count].cns);
+			printf("\n");
 	
 			printf("Altura em metros: ");
 			scanf("%f", &pacient_SUS[pacient_count].height);
@@ -659,8 +659,166 @@ int pesquisar_paciente()
 
 int calculos_estatisticos() 
 {
-	printf("Implementar calculos estatisticos\n\n");
-	return 1;
+	printf("          ________________________________________\n");
+	printf("         |                                        |\n");
+	printf("         |    Sistema de cálculos estatísticos    |\n");
+	printf("         |________________________________________|\n\n");
+
+	char number_typed[1];
+	int confirm_typed;
+		printf("Digite o número correspondente ao cálculo estatístico:\n\n");
+		printf(" 1- Média do peso     2- Média da altura     3- Média da idade\n\n");
+		printf(" 4- Voltar\n\n");
+	do{
+		printf("Digite o número: ");
+		scanf("%s", number_typed);
+		printf("\n");
+
+		confirm_typed = strcmp(number_typed, "1") == 0 || strcmp(number_typed, "2") == 0 ||
+						strcmp(number_typed, "3") == 0 || strcmp(number_typed, "4") == 0  ? 0 : 1;
+
+	}while(confirm_typed == 1);
+
+
+	char type_of_pacient[1];
+	int confirm_pacient_type;
+	if(strcmp(number_typed, "1") == 0 || strcmp(number_typed, "2") == 0 || strcmp(number_typed, "3") == 0)
+	{
+		printf("Digite o número correspondente ao tipo de amostra populacional:\n\n");
+		printf("1- Pacientes com COVID-19    2- Pacientes sem COVID-19\n\n");
+		do{
+			printf("Digite o número: ");
+			scanf("%s", type_of_pacient);
+			printf("\n");
+
+			confirm_pacient_type = strcmp(type_of_pacient, "1") == 0 || strcmp(type_of_pacient, "2") == 0 ? 0 : 1;
+
+		}while(confirm_pacient_type == 1);
+
+		if(strcmp(number_typed, "1") == 0)
+		{
+			if(strcmp(type_of_pacient, "1") == 0)
+			{
+				int i;
+				int positive_pacient = 0;
+				float weight_media = 0.00;
+				for(i = 0; i < pacient_count; i++)
+				{	
+					if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+					{
+						weight_media += pacient_SUS[i].weight;
+						positive_pacient++;
+					}
+				}
+					weight_media = positive_pacient > 0 ? weight_media / (float) positive_pacient : weight_media;
+					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
+					printf("Media do peso corresponde a: %.2fkg\n\n", weight_media);
+			}
+
+			else
+			{
+				float weight_media = 0.00;
+				int negative_pacient = 0;
+				for(int i = 0; i < pacient_count; i++)
+				{	
+					if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+					{
+						weight_media += pacient_SUS[i].weight;
+						negative_pacient++;
+					}
+				}
+					weight_media = negative_pacient > 0 ? weight_media / (float) negative_pacient : weight_media;
+					printf("Foram encontrados um total de %d pacientes com resultado negativo para COVID-19.\n\n", negative_pacient);
+					printf("Media do peso: %.2fkg\n\n", weight_media);
+			}
+
+			return 1;
+		}
+		else if(strcmp(number_typed, "2") == 0)
+		{
+			if(strcmp(type_of_pacient, "1") == 0)
+			{
+				int i;
+				int positive_pacient = 0;
+				float height_media = 0.00;
+				for(i = 0; i < pacient_count; i++)
+				{	
+					if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+					{
+						height_media += pacient_SUS[i].height;
+						positive_pacient++;
+					}
+				}
+					height_media = positive_pacient > 0 ? height_media / (float) positive_pacient : height_media;
+					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
+					printf("Media da altura corresponde a: %.2fkg\n\n", height_media);
+			}
+
+			else
+			{
+				float height_media = 0.00;
+				int negative_pacient = 0;
+				for(int i = 0; i < pacient_count; i++)
+				{	
+					if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+					{
+						height_media += pacient_SUS[i].height;
+						negative_pacient++;
+					}
+				}
+					height_media = negative_pacient > 0 ? height_media / (float) negative_pacient : height_media;
+					printf("Foram encontrados um total de %d pacientes com resultado negativo para COVID-19.\n\n", negative_pacient);
+					printf("Media da altura corresponde a: %.2fkg\n\n", height_media);
+			}
+			return 1;
+		}
+		else if(strcmp(number_typed, "3") == 0)
+		{
+			if(strcmp(type_of_pacient, "1") == 0)
+			{
+				int i;
+				int positive_pacient = 0;
+				float age_media = 0.00;
+				for(i = 0; i < pacient_count; i++)
+				{	
+					if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+					{
+						age_media += (float)pacient_SUS[i].age;
+						positive_pacient++;
+					}
+				}
+					age_media = positive_pacient > 0 ? age_media / (float) positive_pacient : age_media;
+					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
+					printf("Media da idade corresponde a: %.2fkg\n\n", age_media);
+			}
+
+			else
+			{
+				float age_media = 0.00;
+				int negative_pacient = 0;
+				for(int i = 0; i < pacient_count; i++)
+				{	
+					if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+					{
+						age_media += (float)pacient_SUS[i].age;
+						negative_pacient++;
+					}
+				}
+					age_media = negative_pacient > 0 ? age_media / (float) negative_pacient : age_media;
+					printf("Foram encontrados um total de %d pacientes com resultado negativo para COVID-19.\n\n", negative_pacient);
+					printf("Media da idade corresponde a: %.2fkg\n\n", age_media);
+			}
+			return 1;
+		}
+		else{
+			return 2;
+		}
+	}
+	else if(strcmp(number_typed, "4") == 0)
+	{
+		return 1;
+	}
+	return 2;
 }
 
 int main(void) {
@@ -699,6 +857,7 @@ int main(void) {
 						printf("  CRE: %s\n", cad_user[logged_user].CRE);
 					}
 					printf("___________________________________________\n\n");
+
 				do{
 					printf("          _____________________________________________________\n");
 					printf("         |                                                     |\n");
@@ -707,15 +866,14 @@ int main(void) {
 					char program_action[1];
 					int confirm_type_program_action;
 
-					
-					
+					do{
 					printf("Escolha uma das opções do programa e digite o seu número correspondente: \n\n ");
 					printf("1- Cadastrar paciente com COVID-19    2- Pesquisar paciente com COVID-19\n\n");
 					printf(" 3- Cálculos estatísticos              4- Sair\n\n");
 					
-					do{
 						printf("Digite o número: ");
 						scanf("%s", program_action);
+						printf("\n");
 						confirm_type_program_action = strcmp(program_action, "1") == 0 || strcmp(program_action, "2") == 0 || 
 													  strcmp(program_action, "3") == 0 || strcmp(program_action, "4") == 0 ? 0 : 1;
 					}while(confirm_type_program_action == 1);
