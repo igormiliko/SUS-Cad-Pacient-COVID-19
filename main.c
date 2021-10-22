@@ -6,61 +6,34 @@
 #include <ctype.h>
 #include <malloc.h>
 
-typedef struct {
-    char CRE[7];
-    char CRM[7];
-    char name[60];
-    char *user_name;
-    char *federal_state;
-    char *municipio;
-    char *sus_unity;
-    char *password;
-    char *type;
-}doctor_nurse;
+typedef struct 
+{	
+		char CRE[22];
+		char CRM[22];
+		char name[60];
+		char nick_name[60];
+		char estado[16];
+		char municipio[30];
+		char unidade_SUS[30];
+		char senha[8];
+		char type[10];
 
-static int get_mode();
-void banner();
+} Professional_health;
+
+Professional_health user_register[100];
 
 int main(void) {
-   float we = 1.23;
-   float um = 1.00;
+   Professional_health *user = (Professional_health*) malloc(sizeof(Professional_health));
+   if(user)
+   {    
+       printf("Digite seu nome: ");
+       scanf("%s",user->name);
+       printf("\n");
+       user_register[0] = *user;
+       free(user);   
+   }
 
-   printf("%.2f", um * we);
+   printf("Seu nome no cadastro é: %s", user_register[0].name);
+
 }
 
-void banner() {
-    printf("\n\n\n");
-	printf(" -------             -------     ________________________________\n");
-	printf("|         |       | |           |                                |\n");
-	printf("|         |       | |           | Bem vindo ao susC-1.0,software |\n");
-	printf(" -------  |       |  -------    | para registrar  pacientes  com |\n");
-	printf("        | |       |         |   | sintomas de COVID-19.Por favor |\n");
-	printf("        | |       |         |   | efetue seu cadastro no sistema |\n");
-	printf(" -------   -------   -------    |________________________________|\n");
-	printf("\n\n\n");
-}
-
-static int get_mode(){
-	char *mode;
-	mode = (char *)malloc(sizeof(char));
-    if(mode)
-    {
-    	int *compare_mode = (int *) malloc(sizeof(int));
-        if(compare_mode)
-        {
-            do
-            {
-
-                printf("Aperte 0 para se cadastrar, ou 1 para efetuar login: ");
-                scanf("%s", mode);
-                printf("\n");
-                *compare_mode = strcmp(mode, "0") == 0 || strcmp(mode, "1") == 0 ? 1 : 0;
-
-            }while(*compare_mode == 0 );
-        }
-    }
-
-	return strcmp(mode, "0") == 0 ? 1 : 0;
-}
-
-//clang -ggdb3 -O0 -std=c11 -Wall -Werror -Wextra -Wno-sign-compare -Wno-unused-parameter -Wno-unused-variable -Wshadow    main.c  -lcrypt -lcs50 -lm -o run

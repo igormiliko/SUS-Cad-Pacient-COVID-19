@@ -29,8 +29,6 @@ int ler_string(char s[], int max)
     return (i);
 }
 
-
-
 float *strongness_pass(char *str, float *pn)
 {
     int i= 0;
@@ -62,7 +60,7 @@ float *strongness_pass(char *str, float *pn)
 	return 0;
 }
 
-struct Professional_health
+typedef struct 
 {	
 		char CRE[22];
 		char CRM[22];
@@ -74,14 +72,17 @@ struct Professional_health
 		char senha[8];
 		char type[10];
 
-} cad_user[100];
+} Professional_health;
+
+Professional_health cad_user[100];
 
 int user_count = 0;
 
 
-struct Pacient
+typedef struct 
 {	
 		char nome[60];
+		char sex[2];
 		int age;
 		float height;
 		float weight;
@@ -89,12 +90,14 @@ struct Pacient
 		char consult_data[11];
 		char COVID_19[2];
 		char last_week_contact[2];
-} pacient_SUS[100];
+} Patient;
 
-int pacient_count = 0;
+Patient patient_SUS[100];
+
+int patient_count = 0;
 
 
-struct Professional_health logged_user;
+Professional_health logged_user;
 
 static int banner() {
 	printf(" -------             -------     ________________________________\n");
@@ -131,7 +134,8 @@ static int get_mode(){
 //////////////////////////////////////    SIGNIN LOGIC    /////////////////////////////////////
 
 static int sign_in()
-{
+{	
+
 	int to_compare;
 	//to_compare = malloc(sizeof(int));
 
@@ -144,153 +148,161 @@ static int sign_in()
 	int confirm_datas;
 	//confirm_datas = malloc(sizeof(int)	);
 
-	do{
-	printf("|--------------- CADASTRAR USUÁRIO ---------------|\n\n");
+	Professional_health *registering_user = (Professional_health*) malloc(sizeof(Professional_health));
+
+	if(registering_user)
+	{
 		do{
-			printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
-			scanf("%s", user_conseil);
-			printf("\n");
-			to_compare = strcmp(user_conseil, "CRM") == 0 || strcmp(user_conseil, "CRE") == 0 ? 0 : 1;
-		}while(to_compare != 0);
-
-
-
-		if(strcmp(user_conseil, "CRM") == 0)
-		{
-			printf("Digite o seu CRM: ");
-			scanf("%s", cad_user[user_count].CRM);
-			printf("\n");
-			strcpy(cad_user[user_count].type, "MÉDICO");
-
-		}
-		else
-		{
-			printf("Digite o seu CRE: ");
-			scanf("%s", cad_user[user_count].CRE);
-			printf("\n");
-			strcpy(cad_user[user_count].type, "ENFERMEIRO");
-		}
-
-
-
-
-		printf("Cadastre o seu nome completo: ");
-		ler_string( cad_user[user_count].name, 60);
-		printf("\n");
-		//printf("%s", cad_user[user_count].name);
-
-		printf("Cadastre o seu nome de usuário (sem espaços): ");
-		ler_string( cad_user[user_count].nick_name, 60);
-		printf("\n");
-
-		do{
-			printf("Qual o estado onde você trabalha(Utilize a forma abreviada 'DF')? ");
-			scanf("%s", cad_user[user_count].estado);
-			printf("\n");
-		}while(strlen(cad_user[user_count].estado) != 2);
-
-		printf("Qual o município onde você trabalha? ");
-		ler_string(cad_user[user_count].municipio,30);
-		printf("\n");
-
-		printf("Qual sua unidade de saúde? ");
-		scanf("%s", cad_user[user_count].unidade_SUS);
-
-		printf("\n");
-		printf("          ___________________________________________\n");
-		printf("         |   _____________________________________   |\n");
-		printf("         |  |                                     |  |\n");
-		printf("         |  | ATENÇÃO !! Cadastre uma senha forte |  |\n");
-		printf("         |  | com  no   mínimo  8  caracteres ,   |  |\n");
-		printf("         |  | constando  dentre eles  números  e  |  |\n");
-		printf("         |  | caracteres especiais !!!!!          |  |\n");
-		printf("         |  |_____________________________________|  |\n");
-		printf("         |___________________________________________|\n");
-
-		printf("\n");
-
-
-		//LOGIC TO COMPARE AND ASSINGMENT THE PASSWORD
-		do{
-			float strong_ix = 0;
-
-			strcpy(cad_user[user_count].senha, getpass("Cadastre sua senha: "));
-			printf("\n");
-
-			strongness_pass(cad_user[user_count].senha, &strong_ix);
-
-				strcpy(compare_pass, getpass("Confirme sua senha: "));
+		printf("|--------------- CADASTRAR USUÁRIO ---------------|\n\n");
+			do{
+				printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
+				scanf("%s", user_conseil);
 				printf("\n");
+				to_compare = strcmp(user_conseil, "CRM") == 0 || strcmp(user_conseil, "CRE") == 0 ? 0 : 1;
+			}while(to_compare != 0);
 
-				
-			if(strong_ix > 0.325)
+
+
+			if(strcmp(user_conseil, "CRM") == 0)
 			{
-					if(strncmp(cad_user[user_count].senha, compare_pass, 8) == 0)
-					{
-						to_compare = 0;
-						printf("          ___________________________________________\n");
-						printf("         |                                           |\n");
-						printf("         |             Senha correta!                |\n");
-						printf("         |___________________________________________|\n");
-					}
-					else
-					{
-						to_compare = 1;
-						printf("          ___________________________________________\n");
-						printf("         |                                           |\n");
-						printf("         |      Senha inválida, tente novamente      |\n");
-						printf("         |___________________________________________|\n");
-					}
+				printf("Digite o seu CRM: ");
+				scanf("%s", registering_user->CRM);
+				printf("\n");
+				strcpy(registering_user->type, "MÉDICO");
+
 			}
 			else
 			{
-				printf("Cadastre uma senha mais forte!");
+				printf("Digite o seu CRE: ");
+				scanf("%s", registering_user->CRE);
 				printf("\n");
-				printf("Dica: Coloque 4 caracteres especiais e pelo menos 1 número");
-
-				to_compare = 1;
+				strcpy(registering_user->type, "ENFERMEIRO");
 			}
+
+
+
+
+			printf("Cadastre o seu nome completo: ");
+			ler_string( registering_user->name, 60);
+			printf("\n");
+			//printf("%s", registering_user->name);
+
+			printf("Cadastre o seu nome de usuário (sem espaços): ");
+			ler_string( registering_user->nick_name, 60);
 			printf("\n");
 
-		}while(to_compare == 1);
-		
-			char confirm_type_char;
-	
-				printf("NOME: %s\n", cad_user[user_count].name);
-				printf("Nome de usuário: %s\n", cad_user[user_count].nick_name);
-				if(strcmp(user_conseil, "CRM") == 0)
+			do{
+				printf("Qual o estado onde você trabalha(Utilize a forma abreviada 'DF')? ");
+				scanf("%s", registering_user->estado);
+				printf("\n");
+			}while(strlen(registering_user->estado) != 2);
+
+			printf("Qual o município onde você trabalha? ");
+			ler_string(registering_user->municipio,30);
+			printf("\n");
+
+			printf("Qual sua unidade de saúde? ");
+			scanf("%s", registering_user->unidade_SUS);
+
+			printf("\n");
+			printf("          ___________________________________________\n");
+			printf("         |   _____________________________________   |\n");
+			printf("         |  |                                     |  |\n");
+			printf("         |  | ATENÇÃO !! Cadastre uma senha forte |  |\n");
+			printf("         |  | com  no   mínimo  8  caracteres ,   |  |\n");
+			printf("         |  | constando  dentre eles  números  e  |  |\n");
+			printf("         |  | caracteres especiais !!!!!          |  |\n");
+			printf("         |  |_____________________________________|  |\n");
+			printf("         |___________________________________________|\n");
+
+			printf("\n");
+
+
+			//LOGIC TO COMPARE AND ASSINGMENT THE PASSWORD
+			do{
+				float strong_ix = 0;
+
+				strcpy(registering_user->senha, getpass("Cadastre sua senha: "));
+				printf("\n");
+
+				strongness_pass(registering_user->senha, &strong_ix);
+
+					strcpy(compare_pass, getpass("Confirme sua senha: "));
+					printf("\n");
+
+					
+				if(strong_ix > 0.325)
 				{
-					printf("O seu CRM é: %s", cad_user[user_count].CRM);
-					printf("\n");
-					printf("Você é um: %s",cad_user[user_count].type);
-					printf("\n");
+						if(strncmp(registering_user->senha, compare_pass, 8) == 0)
+						{
+							to_compare = 0;
+							printf("          ___________________________________________\n");
+							printf("         |                                           |\n");
+							printf("         |             Senha correta!                |\n");
+							printf("         |___________________________________________|\n");
+						}
+						else
+						{
+							to_compare = 1;
+							printf("          ___________________________________________\n");
+							printf("         |                                           |\n");
+							printf("         |      Senha inválida, tente novamente      |\n");
+							printf("         |___________________________________________|\n");
+						}
 				}
 				else
 				{
-					printf("O seu CRE é: %s", cad_user[user_count].CRE);
+					printf("Cadastre uma senha mais forte!");
 					printf("\n");
-					printf("Você é um : %s",cad_user[user_count].type);
-					printf("\n");
+					printf("Dica: Coloque 4 caracteres especiais e pelo menos 1 número");
+
+					to_compare = 1;
 				}
-
-				printf("ESTADO: %s\n", cad_user[user_count].estado);
-				printf("MUNICIPIO: %s\n", cad_user[user_count].municipio);
-				printf("UNIDADE DE SAÚDE: %s\n", cad_user[user_count].unidade_SUS);
 				printf("\n");
 
-			do{
-				printf("Os seus dados estão corretos? Digite s/n -> ");
-				scanf("%s", &confirm_type_char);
-				printf("\n");
+			}while(to_compare == 1);
+			
+				char confirm_type_char;
+		
+					printf("NOME: %s\n", registering_user->name);
+					printf("Nome de usuário: %s\n", registering_user->nick_name);
+					if(strcmp(user_conseil, "CRM") == 0)
+					{
+						printf("O seu CRM é: %s", registering_user->CRM);
+						printf("\n");
+						printf("Você é um: %s",registering_user->type);
+						printf("\n");
+					}
+					else
+					{
+						printf("O seu CRE é: %s", registering_user->CRE);
+						printf("\n");
+						printf("Você é um : %s",registering_user->type);
+						printf("\n");
+					}
 
-				confirm_datas = strcmp(&confirm_type_char, "s") == 0 || strcmp(&confirm_type_char, "n") == 0 ? 0 : 1;
+					printf("ESTADO: %s\n", registering_user->estado);
+					printf("MUNICIPIO: %s\n", registering_user->municipio);
+					printf("UNIDADE DE SAÚDE: %s\n", registering_user->unidade_SUS);
+					printf("\n");
 
-			}while(confirm_datas == 1);
+				do{
+					printf("Os seus dados estão corretos? Digite s/n -> ");
+					scanf("%s", &confirm_type_char);
+					printf("\n");
 
-			confirm_datas = strcmp(&confirm_type_char, "s") == 0 ? 0 : 1;
+					confirm_datas = strcmp(&confirm_type_char, "s") == 0 || strcmp(&confirm_type_char, "n") == 0 ? 0 : 1;
 
-	}while(confirm_datas == 1);
+				}while(confirm_datas == 1);
 
+				confirm_datas = strcmp(&confirm_type_char, "s") == 0 ? 0 : 1;
+
+		}while(confirm_datas == 1);
+
+		cad_user[user_count] = *registering_user;
+
+		free(registering_user);
+	}
 	user_count++;
 	return 0;	
 }
@@ -316,12 +328,15 @@ int log_in(int *user_id)
 		scanf("%s", user_name);
 		printf("\n");
 
+		printf("Debuging login: %s\n\n", user_name);
+
 		for(int i = 0; i < user_count; i++)
 		{
 			if(strcmp(user_name, cad_user[i].nick_name) == 0)
 			{	
 				user_name_in_DB = 0;
 				user_to_compare_password = i;
+				printf("Debuging login: %s\n\n", cad_user[i].nick_name);
 			}
 		}
 		if(user_name_in_DB == 1)
@@ -368,96 +383,111 @@ int log_in(int *user_id)
 int cadastrar_paciente() 
 {
 	int confirm_pacient_datas;
+	Patient *registering_patient = (Patient*)malloc(sizeof(Patient));
 
 	printf("|------------------ CADASTRAR PACIENTE -----------------|\n\n");
-	do{
-		// a função ler_string aceita espaços
-		printf("Nome: ");
-		ler_string(pacient_SUS[pacient_count].nome, 60);
-		printf("\n");
-
-
-			printf("Idade: ");
-			scanf("%d", &pacient_SUS[pacient_count].age);
-			printf("\n");
-
-		printf("CNS (Cartão Nacional de Saúde): ");
-		scanf("%s", pacient_SUS[pacient_count].cns);
-		printf("\n");
-	
-			printf("Altura em metros: ");
-			scanf("%f", &pacient_SUS[pacient_count].height);
-			printf("\n");
-			
-			printf("Peso em quilogramas: ");
-			scanf("%f", &pacient_SUS[pacient_count].weight);
-			printf("\n");
-
-		// Alghoritimo para confirmar se o usuário digitou a data no formato correto
-		// Ele também assimila o valor digitado ao paciente que está sendo cadastrado
-		int confirm_type_date;
+	if(registering_patient)
+	{	
 		do{
-			printf("Data da consulta(__/__/__): ");
-			scanf("%s",pacient_SUS[pacient_count].consult_data);
+			// a função ler_string aceita espaços
+			printf("Nome: ");
+			ler_string(registering_patient->nome, 60);
 			printf("\n");
 
-			int len = strlen(pacient_SUS[pacient_count].consult_data);
-			
-			int const_bar = strcmp(&pacient_SUS[pacient_count].consult_data[2], "/")  &&
-							strcmp(&pacient_SUS[pacient_count].consult_data[5], "/")  ? 0 : 1;
+			int confirm_typed_sex;
+			do{
+				printf("Sexo: M/F ");
+				ler_string(registering_patient->sex, 2);
+				printf("\n");
+				confirm_typed_sex = strcmp(registering_patient->sex, "M") == 0 ||
+								strcmp(registering_patient->sex, "F") == 0 ? 0 : 1;
+			}while(confirm_typed_sex == 1);
 
-			confirm_type_date = const_bar == 0 && len == 10 ? 0 : 1;
 
-			if(confirm_type_date == 1)
-			{
-				printf("Formato inválido!!\n");
-			}
-		}while(confirm_type_date == 1);
+				printf("Idade: ");
+				scanf("%d", &registering_patient->age);
+				printf("\n");
 
-		// Alghoritimo para confirmarse o usuário digitou S ou N
-		// Ele também assimila o valor digitado ao paciente que está sendo cadastrado
-		int type_confirm_y_n;
-		do{
-			printf("Esteve em contato com alguém que contraiu COVID-19 na última semana? Digite s/n ");
-			scanf("%s", pacient_SUS[pacient_count].last_week_contact);
+			printf("CNS (Cartão Nacional de Saúde): ");
+			scanf("%s", registering_patient->cns);
 			printf("\n");
-
-			type_confirm_y_n = strcmp(pacient_SUS[pacient_count].last_week_contact, "s") == 0 || 
-							strcmp(pacient_SUS[pacient_count].last_week_contact, "n") == 0 ? 0 : 1;
-
-		}while(type_confirm_y_n == 1);
-
-		// Alghoritimo para confirmar se o usuário digitou o resultado de COVID-19
-		// no formato correto. Ele também assimila o valor digitado ao paciente 
-		// que está sendo cadastrado
-		int type_confirm_plus_minus;
-		do{
-			printf("Resultado COVID-19: +/- ");
-			scanf("%s", pacient_SUS[pacient_count].COVID_19);
-			printf("\n");
-
-			type_confirm_plus_minus = strcmp(pacient_SUS[pacient_count].COVID_19, "+") == 0 || 
-							strcmp(pacient_SUS[pacient_count].COVID_19, "-") == 0 ? 0 : 1;
-		}while(type_confirm_plus_minus == 1);
 		
-		
+				printf("Altura em metros: ");
+				scanf("%f", &registering_patient->height);
+				printf("\n");
+				
+				printf("Peso em quilogramas: ");
+				scanf("%f", &registering_patient->weight);
+				printf("\n");
 
-		char confirm_char;
-		do{
-			printf("Os dados do paciente estão corretos? Digite s/n -> ");
-			scanf("%s", &confirm_char);
-			printf("\n");
+			// Alghoritimo para confirmar se o usuário digitou a data no formato correto
+			// Ele também assimila o valor digitado ao paciente que está sendo cadastrado
+			int confirm_type_date;
+			do{
+				printf("Data da consulta(__/__/__): ");
+				scanf("%s",registering_patient->consult_data);
+				printf("\n");
 
-			confirm_pacient_datas = strcmp(&confirm_char, "s") == 0 || strcmp(&confirm_char, "n") == 0 ? 0 : 1;
+				int len = strlen(registering_patient->consult_data);
+				
+				int const_bar = strcmp(&registering_patient->consult_data[2], "/")  &&
+								strcmp(&registering_patient->consult_data[5], "/")  ? 0 : 1;
+
+				confirm_type_date = const_bar == 0 && len == 10 ? 0 : 1;
+
+				if(confirm_type_date == 1)
+				{
+					printf("Formato inválido!!\n");
+				}
+			}while(confirm_type_date == 1);
+
+			// Alghoritimo para confirmarse o usuário digitou S ou N
+			// Ele também assimila o valor digitado ao paciente que está sendo cadastrado
+			int type_confirm_y_n;
+			do{
+				printf("Esteve em contato com alguém que contraiu COVID-19 na última semana? Digite s/n ");
+				scanf("%s", registering_patient->last_week_contact);
+				printf("\n");
+
+				type_confirm_y_n = strcmp(registering_patient->last_week_contact, "s") == 0 || 
+								strcmp(registering_patient->last_week_contact, "n") == 0 ? 0 : 1;
+
+			}while(type_confirm_y_n == 1);
+
+			// Alghoritimo para confirmar se o usuário digitou o resultado de COVID-19
+			// no formato correto. Ele também assimila o valor digitado ao paciente 
+			// que está sendo cadastrado
+			int type_confirm_plus_minus;
+			do{
+				printf("Resultado COVID-19: +/- ");
+				scanf("%s", registering_patient->COVID_19);
+				printf("\n");
+
+				type_confirm_plus_minus = strcmp(registering_patient->COVID_19, "+") == 0 || 
+								strcmp(registering_patient->COVID_19, "-") == 0 ? 0 : 1;
+			}while(type_confirm_plus_minus == 1);
+			
+			
+
+			char confirm_char;
+			do{
+				printf("Os dados do paciente estão corretos? Digite s/n -> ");
+				scanf("%s", &confirm_char);
+				printf("\n");
+
+				confirm_pacient_datas = strcmp(&confirm_char, "s") == 0 || strcmp(&confirm_char, "n") == 0 ? 0 : 1;
+
+			}while(confirm_pacient_datas == 1);
+
+			confirm_pacient_datas = strcmp(&confirm_char, "s") == 0 ? 0 : 1;
 
 		}while(confirm_pacient_datas == 1);
 
-		confirm_pacient_datas = strcmp(&confirm_char, "s") == 0 ? 0 : 1;
-
-	}while(confirm_pacient_datas == 1);
-
+		patient_SUS[patient_count] = *registering_patient;
+		free(registering_patient);
+	}
 	
-	pacient_count++;
+	patient_count++;
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -496,9 +526,9 @@ int pesquisar_paciente()
 		ler_string(name_to_search, 60);
 		printf("\n");
 
-		for(int i = 0; i < pacient_count; i++)
+		for(int i = 0; i < patient_count; i++)
 		{
-			finding_pacient = strcmp(pacient_SUS[i].nome, name_to_search) == 0 ? 0 : 1;
+			finding_pacient = strcmp(patient_SUS[i].nome, name_to_search) == 0 ? 0 : 1;
 			if(finding_pacient == 0)
 			{
 				pacient_finded_ix = i;
@@ -513,14 +543,14 @@ int pesquisar_paciente()
 		}
 		else
 		{
-			printf("NOME: %s\n", pacient_SUS[pacient_finded_ix].nome);
-			printf("CNS: %s\n", pacient_SUS[pacient_finded_ix].cns);
-			printf("IDADE: %d\n", pacient_SUS[pacient_finded_ix].age);
-			printf("ALTURA: %.2fm\n", pacient_SUS[pacient_finded_ix].height);
-			printf("PESO: %.2fkg\n", pacient_SUS[pacient_finded_ix].weight);
-			printf("DATA DA CONSULTA: %s\n", pacient_SUS[pacient_finded_ix].consult_data);
-			printf("CONTATO COM INFECTADO? %s\n", pacient_SUS[pacient_finded_ix].last_week_contact);
-			printf("RESULTADO COVID-19: %s\n\n", pacient_SUS[pacient_finded_ix].COVID_19);
+			printf("NOME: %s\n", patient_SUS[pacient_finded_ix].nome);
+			printf("CNS: %s\n", patient_SUS[pacient_finded_ix].cns);
+			printf("IDADE: %d\n", patient_SUS[pacient_finded_ix].age);
+			printf("ALTURA: %.2fm\n", patient_SUS[pacient_finded_ix].height);
+			printf("PESO: %.2fkg\n", patient_SUS[pacient_finded_ix].weight);
+			printf("DATA DA CONSULTA: %s\n", patient_SUS[pacient_finded_ix].consult_data);
+			printf("CONTATO COM INFECTADO? %s\n", patient_SUS[pacient_finded_ix].last_week_contact);
+			printf("RESULTADO COVID-19: %s\n\n", patient_SUS[pacient_finded_ix].COVID_19);
 		}
 	}
 	else if (strcmp(program_action, "2") == 0)
@@ -534,9 +564,9 @@ int pesquisar_paciente()
 		scanf("%s",cns_to_search);
 		printf("\n");
 
-		for(int i = 0; i < pacient_count; i++)
+		for(int i = 0; i < patient_count; i++)
 		{
-			finding_pacient = strcmp(pacient_SUS[i].cns, cns_to_search) == 0 ? 0 : 1;
+			finding_pacient = strcmp(patient_SUS[i].cns, cns_to_search) == 0 ? 0 : 1;
 			if(finding_pacient == 0)
 			{
 				pacient_finded_ix = i;
@@ -552,14 +582,14 @@ int pesquisar_paciente()
 		}
 		else
 		{
-			printf("NOME: %s\n", pacient_SUS[pacient_finded_ix].nome);
-			printf("CNS: %s\n", pacient_SUS[pacient_finded_ix].cns);
-			printf("IDADE: %d\n", pacient_SUS[pacient_finded_ix].age);
-			printf("ALTURA: %.2fm\n", pacient_SUS[pacient_finded_ix].height);
-			printf("PESO: %.2fkg\n", pacient_SUS[pacient_finded_ix].weight);
-			printf("DATA DA CONSULTA: %s\n", pacient_SUS[pacient_finded_ix].consult_data);
-			printf("CONTATO COM INFECTADO? %s\n", pacient_SUS[pacient_finded_ix].last_week_contact);
-			printf("RESULTADO COVID-19: %s\n\n", pacient_SUS[pacient_finded_ix].COVID_19);
+			printf("NOME: %s\n", patient_SUS[pacient_finded_ix].nome);
+			printf("CNS: %s\n", patient_SUS[pacient_finded_ix].cns);
+			printf("IDADE: %d\n", patient_SUS[pacient_finded_ix].age);
+			printf("ALTURA: %.2fm\n", patient_SUS[pacient_finded_ix].height);
+			printf("PESO: %.2fkg\n", patient_SUS[pacient_finded_ix].weight);
+			printf("DATA DA CONSULTA: %s\n", patient_SUS[pacient_finded_ix].consult_data);
+			printf("CONTATO COM INFECTADO? %s\n", patient_SUS[pacient_finded_ix].last_week_contact);
+			printf("RESULTADO COVID-19: %s\n\n", patient_SUS[pacient_finded_ix].COVID_19);
 		}
 
 	}
@@ -584,12 +614,12 @@ int pesquisar_paciente()
 			printf("         |                                           |\n");
 			printf("         |    Pacientes com resultados positivos     |\n");
 			printf("         |___________________________________________|\n\n");
-			for(int i = 0; i < pacient_count; i++)
+			for(int i = 0; i < patient_count; i++)
 			{
-				if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+				if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
 				{
-					printf("%d- Nome do paciente: %s", i + 1, pacient_SUS[i].nome);
-					printf("    Resultado: %s\n\n", pacient_SUS[i].COVID_19);
+					printf("%d- Nome do paciente: %s", i + 1, patient_SUS[i].nome);
+					printf("    Resultado: %s\n\n", patient_SUS[i].COVID_19);
 					count_result++;
 				}
 			}
@@ -617,12 +647,12 @@ int pesquisar_paciente()
 			printf("         |                                           |\n");
 			printf("         |    Pacientes com resultados negativos     |\n");
 			printf("         |___________________________________________|\n\n");
-			for(int i = 0; i < pacient_count; i++)
+			for(int i = 0; i < patient_count; i++)
 			{
-				if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+				if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
 				{
-					printf("%d- Nome do paciente: %s", i + 1, pacient_SUS[i].nome);
-					printf("    Resultado: %s\n\n", pacient_SUS[i].COVID_19);
+					printf("%d- Nome do paciente: %s", i + 1, patient_SUS[i].nome);
+					printf("    Resultado: %s\n\n", patient_SUS[i].COVID_19);
 					count_result++;
 				}
 			}
@@ -702,11 +732,11 @@ int calculos_estatisticos()
 				int i;
 				int positive_pacient = 0;
 				float weight_media = 0.00;
-				for(i = 0; i < pacient_count; i++)
+				for(i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+					if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
 					{
-						weight_media += pacient_SUS[i].weight;
+						weight_media += patient_SUS[i].weight;
 						positive_pacient++;
 					}
 				}
@@ -719,11 +749,11 @@ int calculos_estatisticos()
 			{
 				float weight_media = 0.00;
 				int negative_pacient = 0;
-				for(int i = 0; i < pacient_count; i++)
+				for(int i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+					if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
 					{
-						weight_media += pacient_SUS[i].weight;
+						weight_media += patient_SUS[i].weight;
 						negative_pacient++;
 					}
 				}
@@ -741,11 +771,11 @@ int calculos_estatisticos()
 				int i;
 				int positive_pacient = 0;
 				float height_media = 0.00;
-				for(i = 0; i < pacient_count; i++)
+				for(i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+					if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
 					{
-						height_media += pacient_SUS[i].height;
+						height_media += patient_SUS[i].height;
 						positive_pacient++;
 					}
 				}
@@ -758,11 +788,11 @@ int calculos_estatisticos()
 			{
 				float height_media = 0.00;
 				int negative_pacient = 0;
-				for(int i = 0; i < pacient_count; i++)
+				for(int i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+					if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
 					{
-						height_media += pacient_SUS[i].height;
+						height_media += patient_SUS[i].height;
 						negative_pacient++;
 					}
 				}
@@ -779,11 +809,11 @@ int calculos_estatisticos()
 				int i;
 				int positive_pacient = 0;
 				float age_media = 0.00;
-				for(i = 0; i < pacient_count; i++)
+				for(i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(pacient_SUS[i].COVID_19, "+") == 0)
+					if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
 					{
-						age_media += (float)pacient_SUS[i].age;
+						age_media += (float)patient_SUS[i].age;
 						positive_pacient++;
 					}
 				}
@@ -796,11 +826,11 @@ int calculos_estatisticos()
 			{
 				float age_media = 0.00;
 				int negative_pacient = 0;
-				for(int i = 0; i < pacient_count; i++)
+				for(int i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(pacient_SUS[i].COVID_19, "-") == 0)
+					if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
 					{
-						age_media += (float)pacient_SUS[i].age;
+						age_media += (float)patient_SUS[i].age;
 						negative_pacient++;
 					}
 				}
@@ -828,7 +858,7 @@ int main(void) {
 	do
 	{
 		banner();
-		int logged_user = 0;
+		int logged_user;
 		int mode = get_mode();
 
 		//printf("MODE: %d\n", mode);
