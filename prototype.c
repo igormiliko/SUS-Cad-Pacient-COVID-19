@@ -181,15 +181,33 @@ static int sign_in()
 
 
 
-
+			//TODO
 			printf("Cadastre o seu nome completo: ");
 			ler_string( registering_user->name, 60);
 			printf("\n");
 			//printf("%s", registering_user->name);
 
-			printf("Cadastre o seu nome de usuário (sem espaços): ");
-			ler_string( registering_user->nick_name, 60);
-			printf("\n");
+			int exist_user_name;
+			do{
+				printf("Cadastre o seu nome de usuário (sem espaços): ");
+				ler_string( registering_user->nick_name, 60);
+				printf("\n");
+				if(user_count > 0)
+				{
+					for(int i = 0; i < user_count; i++) 
+					{
+						if(strcmp(registering_user->nick_name, cad_user[i].nick_name) == 0)
+						{
+							exist_user_name = 1;
+							printf("Nome de usuário já existe!\n");
+						}
+						else
+						{
+							exist_user_name = 1;
+						}
+					}
+				}
+			}while(exist_user_name == 1);
 
 			do{
 				printf("Qual o estado onde você trabalha(Utilize a forma abreviada 'DF')? ");
@@ -312,8 +330,9 @@ static int sign_in()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////    LOGIN LOGIC    /////////////////////////////////////
-int log_in(int *user_id)
+int log_in()
 {	
+	int i;
 	char user_name[60];
 	char user_password[8];
 
@@ -328,15 +347,12 @@ int log_in(int *user_id)
 		scanf("%s", user_name);
 		printf("\n");
 
-		printf("Debuging login: %s\n\n", user_name);
-
-		for(int i = 0; i < user_count; i++)
+		for(i = 0; i < user_count; i++)
 		{
 			if(strcmp(user_name, cad_user[i].nick_name) == 0)
 			{	
 				user_name_in_DB = 0;
 				user_to_compare_password = i;
-				printf("Debuging login: %s\n\n", cad_user[i].nick_name);
 			}
 		}
 		if(user_name_in_DB == 1)
@@ -360,6 +376,8 @@ int log_in(int *user_id)
 			printf("         |                                           |\n");
 			printf("         |        Login efetuado com sucesso!        |\n");
 			printf("         |___________________________________________|\n\n");
+			
+			return user_to_compare_password;
 		}
 		else
 		{
@@ -371,9 +389,9 @@ int log_in(int *user_id)
 		}
 	}while(user_password_correct == 1);
 
-	user_id = &user_to_compare_password;
-	return user_password_correct == 0 ? 2 : 0;
+	return 1;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -781,7 +799,7 @@ int calculos_estatisticos()
 				}
 					height_media = positive_pacient > 0 ? height_media / (float) positive_pacient : height_media;
 					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
-					printf("Media da altura corresponde a: %.2fkg\n\n", height_media);
+					printf("Media da altura corresponde a: %.2fm\n\n", height_media);
 			}
 
 			else
@@ -859,6 +877,7 @@ int main(void) {
 	{
 		banner();
 		int logged_user;
+
 		int mode = get_mode();
 
 		//printf("MODE: %d\n", mode);
@@ -870,10 +889,10 @@ int main(void) {
 		else
 		{	
 
-			to_cycle = log_in(&logged_user);
+			logged_user = log_in();
 			//to_cycle = 2;
 
-			if(to_cycle == 2) 
+			if(logged_user > -1) 
 			{
 					printf("___________________________________________\n");
 					printf("                                           \n");
