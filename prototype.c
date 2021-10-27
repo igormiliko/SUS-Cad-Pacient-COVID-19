@@ -162,20 +162,51 @@ static int sign_in()
 			}while(to_compare != 0);
 
 
-
+			int confirm_conseil;
 			if(strcmp(user_conseil, "CRM") == 0)
-			{
-				printf("Digite o seu CRM: ");
-				scanf("%s", registering_user->CRM);
-				printf("\n");
+			{	
+				do{
+					confirm_conseil = 0;
+					printf("Digite o seu CRM: ");
+					scanf("%s", registering_user->CRM);
+					printf("\n");
+					if(user_count > 0) {
+						for(int i = 0; i < user_count; i++ )
+						{
+							if(strcmp(registering_user->CRM, cad_user[i].CRM) == 0)
+							{
+								confirm_conseil = 1;
+							}
+						}
+					}
+					if(confirm_conseil == 1)
+					{
+						printf("Este CRM já está cadastrado!\n");
+					}
+				}while(confirm_conseil == 1);
 				strcpy(registering_user->type, "MÉDICO");
-
 			}
 			else
 			{
-				printf("Digite o seu CRE: ");
-				scanf("%s", registering_user->CRE);
-				printf("\n");
+				do{
+					confirm_conseil = 0;
+					printf("Digite o seu CRE: ");
+					scanf("%s", registering_user->CRE);
+					printf("\n");
+					if(user_count > 0) {
+						for(int i = 0; i < user_count; i++ )
+						{
+							if(strcmp(registering_user->CRE, cad_user[i].CRE) == 0)
+							{
+								confirm_conseil = 1;
+							}
+						}
+					}
+					if(confirm_conseil == 1)
+					{
+						printf("Este CRE já está cadastrado!\n");
+					}
+				}while(confirm_conseil == 1);
 				strcpy(registering_user->type, "ENFERMEIRO");
 			}
 
@@ -189,6 +220,7 @@ static int sign_in()
 
 			int exist_user_name;
 			do{
+				exist_user_name = 0;
 				printf("Cadastre o seu nome de usuário (sem espaços): ");
 				ler_string( registering_user->nick_name, 60);
 				printf("\n");
@@ -200,10 +232,6 @@ static int sign_in()
 						{
 							exist_user_name = 1;
 							printf("Nome de usuário já existe!\n");
-						}
-						else
-						{
-							exist_user_name = 1;
 						}
 					}
 				}
@@ -425,11 +453,30 @@ int cadastrar_paciente()
 				printf("Idade: ");
 				scanf("%d", &registering_patient->age);
 				printf("\n");
+			
+			int exist_cns;
+			do{
+				exist_cns = 0;
 
-			printf("CNS (Cartão Nacional de Saúde): ");
-			scanf("%s", registering_patient->cns);
-			printf("\n");
-		
+				printf("CNS (Cartão Nacional de Saúde): ");
+				scanf("%s", registering_patient->cns);
+				printf("\n");
+				if(patient_count > 0)
+				{	
+					for(int i = 0; i < patient_count; i++)
+					{
+						if(strcmp(registering_patient->cns, patient_SUS[i].cns) == 0)
+						{
+							exist_cns = 1;
+						}
+					}
+				}
+				if(exist_cns == 1)
+				{
+					printf("Este CNS já está cadastrado!\n\n");
+				}
+			}while(exist_cns == 1);
+
 				printf("Altura em metros: ");
 				scanf("%f", &registering_patient->height);
 				printf("\n");
@@ -438,8 +485,7 @@ int cadastrar_paciente()
 				scanf("%f", &registering_patient->weight);
 				printf("\n");
 
-			// Alghoritimo para confirmar se o usuário digitou a data no formato correto
-			// Ele também assimila o valor digitado ao paciente que está sendo cadastrado
+			// Algoritimo para confirmar se o usuário digitou a data no formato correto
 			int confirm_type_date;
 			do{
 				printf("Data da consulta(__/__/__): ");
@@ -460,7 +506,6 @@ int cadastrar_paciente()
 			}while(confirm_type_date == 1);
 
 			// Alghoritimo para confirmarse o usuário digitou S ou N
-			// Ele também assimila o valor digitado ao paciente que está sendo cadastrado
 			int type_confirm_y_n;
 			do{
 				printf("Esteve em contato com alguém que contraiu COVID-19 na última semana? Digite s/n ");
@@ -473,8 +518,7 @@ int cadastrar_paciente()
 			}while(type_confirm_y_n == 1);
 
 			// Alghoritimo para confirmar se o usuário digitou o resultado de COVID-19
-			// no formato correto. Ele também assimila o valor digitado ao paciente 
-			// que está sendo cadastrado
+			// no formato correto.
 			int type_confirm_plus_minus;
 			do{
 				printf("Resultado COVID-19: +/- ");
