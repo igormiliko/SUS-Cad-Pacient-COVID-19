@@ -2,9 +2,66 @@
 #include <stdlib.h>
 #include <string.h>
 #include <pwd.h>
+#include <math.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <malloc.h>
+#include <time.h>
+
+int calc_days_in_year(int year, int month, int day)
+{
+    int total_days, bissexts_years, normal_years = 0;
+	int to_media_bi, to_media_year;
+	float media_days_Per_year;
+// Loop para verificar se o ano é bissexto ou normal e adicioná-lo
+// ao total de dias para ter uma precisão melhor na hora de calcular
+    for(int i = 0; i < year; i++)
+    {
+        if(year % 4 == 0) 
+        {
+            if(year % 100 == 0)
+            {
+                if(year % 400 == 0)
+                {
+                    total_days +=366;
+					bissexts_years++;
+                } else { 
+                    total_days +=365;
+					normal_years++;}
+            } else{ 
+               total_days +=365; 
+			   normal_years++;}
+        }else{ 
+            total_days +=365; 
+			normal_years++;}
+    }
+
+	to_media_bi = bissexts_years * 366;
+	to_media_year =  normal_years * 365;
+	media_days_Per_year = ((float)to_media_bi + (float)to_media_year) / ((float)bissexts_years + (float)normal_years);
+
+// Adicionando os dias nos meses até o mês anterior
+    for(int i = 1; i < month; i++)
+    {
+        if(month % 2 == 0)
+        {
+            if(month == 2)
+            {
+                total_days += 28;
+            }
+            else
+            {
+                total_days += 30;
+            }
+        }
+        else
+        {
+            total_days += 31;
+        }
+    }
+
+    return total_days / media_days_Per_year;
+}
 
 int ler_string(char s[], int max)
 {
@@ -83,7 +140,12 @@ typedef struct
 {	
 		char nome[60];
 		char sex[2];
+		char cpf[12];
+		int phone_number[12];
 		int age;
+		char born_date[11];
+		char email[120];
+		char disease[20];
 		float height;
 		float weight;
 		char cns[40];
@@ -449,11 +511,79 @@ int cadastrar_paciente()
 								strcmp(registering_patient->sex, "F") == 0 ? 0 : 1;
 			}while(confirm_typed_sex == 1);
 
-
-				printf("Idade: ");
-				scanf("%d", &registering_patient->age);
+			// Capturar a data de nascimentio do paciente e calcular sua idade
+			int confirm_born_date = 0;
+			do{
+				printf("Data de nascimento:(__/__/__) ");
+				scanf("%s", registering_patient->born_date);
 				printf("\n");
-			
+				//scanf("%d", &registering_patient->age);
+				int len = strlen(registering_patient->born_date);
+				
+				int const_bar = strcmp(&registering_patient->born_date[2], "/")  &&
+								strcmp(&registering_patient->born_date[5], "/")  ? 0 : 1;
+
+				confirm_born_date = const_bar == 0 && len == 10 ? 0 : 1;
+
+				if(confirm_born_date == 1)
+				{
+					printf("Formato inválido!!\n");
+				}
+				else
+				{
+					//Se a data digitada estiver no formato válido fará o cálculo da idade
+					struct tm *local;
+					local = (struct tm*)malloc(sizeof(struct tm));
+					time_t t;
+					t= time(NULL);
+					local=localtime(&t);
+					char *to_int = malloc(sizeof(char) * 4);
+
+					int patient_born_day, patient_born_month, patient_born_year;
+					int current_day, current_month, current_year;
+					int computing_age;
+
+					//Pegando a data atual
+					current_day = local->tm_mday;
+					current_month = local->tm_mon+1;
+					current_year = local->tm_year+1900;    
+
+					// Transformando o dia em inteiro
+					to_int[0] = registering_patient->born_date[0];
+					to_int[1] = registering_patient->born_date[1];
+					patient_born_day = atoi(to_int);
+
+					// Transformando o mês em inteiro
+					to_int[0] = registering_patient->born_date[3];
+					to_int[1] = registering_patient->born_date[4];
+					patient_born_month = atoi(to_int);
+
+					// Transformando o ano em inteiro
+					to_int[0] = registering_patient->born_date[6];
+					to_int[1] = registering_patient->born_date[7];
+					to_int[2] = registering_patient->born_date[8];
+					to_int[3] = registering_patient->born_date[9];
+					patient_born_year = atoi(to_int);
+					
+
+
+					// Calculando a idade do paciente
+					float patient_born_in_days = calc_days_in_year(patient_born_year,patient_born_month, patient_born_day);
+					float current_in_days = calc_days_in_year(current_year, current_month, current_day);
+
+					float age = current_in_days - patient_born_in_days;
+					
+					printf("Age ===> %f\n", age);
+					//int patient_born_year_in_days;
+
+					
+					// Condicional para saber se o paciente já fez aniversário
+					printf("Idade: %d\n\n", computing_age);
+					
+				}
+
+			}while(confirm_born_date == 1);
+
 			int exist_cns;
 			do{
 				exist_cns = 0;
@@ -933,8 +1063,8 @@ int main(void) {
 		else
 		{	
 
-			logged_user = log_in();
-			//to_cycle = 2;
+			//logged_user = log_in();
+			logged_user = 2;
 
 			if(logged_user > -1) 
 			{
