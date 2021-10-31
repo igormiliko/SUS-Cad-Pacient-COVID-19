@@ -8,60 +8,8 @@
 #include <malloc.h>
 #include <time.h>
 
-int calc_days_in_year(int year, int month, int day)
-{
-    int total_days, bissexts_years, normal_years = 0;
-	int to_media_bi, to_media_year;
-	float media_days_Per_year;
-// Loop para verificar se o ano é bissexto ou normal e adicioná-lo
-// ao total de dias para ter uma precisão melhor na hora de calcular
-    for(int i = 0; i < year; i++)
-    {
-        if(year % 4 == 0) 
-        {
-            if(year % 100 == 0)
-            {
-                if(year % 400 == 0)
-                {
-                    total_days +=366;
-					bissexts_years++;
-                } else { 
-                    total_days +=365;
-					normal_years++;}
-            } else{ 
-               total_days +=365; 
-			   normal_years++;}
-        }else{ 
-            total_days +=365; 
-			normal_years++;}
-    }
 
-	to_media_bi = bissexts_years * 366;
-	to_media_year =  normal_years * 365;
-	media_days_Per_year = ((float)to_media_bi + (float)to_media_year) / ((float)bissexts_years + (float)normal_years);
 
-// Adicionando os dias nos meses até o mês anterior
-    for(int i = 1; i < month; i++)
-    {
-        if(month % 2 == 0)
-        {
-            if(month == 2)
-            {
-                total_days += 28;
-            }
-            else
-            {
-                total_days += 30;
-            }
-        }
-        else
-        {
-            total_days += 31;
-        }
-    }
-
-    return total_days / media_days_Per_year;
-}
 
 int ler_string(char s[], int max)
 {
@@ -140,8 +88,8 @@ typedef struct
 {	
 		char nome[60];
 		char sex[2];
-		char cpf[12];
-		int phone_number[12];
+		char cpf[14];
+		char phone_number[14];
 		int age;
 		char born_date[11];
 		char email[120];
@@ -565,24 +513,124 @@ int cadastrar_paciente()
 					to_int[3] = registering_patient->born_date[9];
 					patient_born_year = atoi(to_int);
 					
-
-
 					// Calculando a idade do paciente
-					float patient_born_in_days = calc_days_in_year(patient_born_year,patient_born_month, patient_born_day);
-					float current_in_days = calc_days_in_year(current_year, current_month, current_day);
+					computing_age = current_year - patient_born_year;
 
-					float age = current_in_days - patient_born_in_days;
-					
-					printf("Age ===> %f\n", age);
-					//int patient_born_year_in_days;
-
-					
-					// Condicional para saber se o paciente já fez aniversário
-					printf("Idade: %d\n\n", computing_age);
+					if(current_month == patient_born_month)
+					{
+						if(current_day < patient_born_day)
+						{
+							computing_age--;
+						}
+					}
+					else if(current_month < patient_born_month)
+					{
+						computing_age--;
+					}
+					registering_patient->age = computing_age;
+					printf("Idade: %d\n\n", registering_patient->age);
 					
 				}
 
 			}while(confirm_born_date == 1);
+
+
+			/*
+				TODO
+
+				1. CPF;
+				2. PHONE NUMBER;
+				3. EMAIL;
+				4. DISEASE;
+			*/
+			// REGRA PARA CAPTURAR O CPF DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
+			// XXX.XXX.XXX-XX
+			int exist_cpf;
+			int correct_typed_cpf;
+			do{
+				exist_cpf = 0;
+				correct_typed_cpf = 0;
+
+				printf("Digite o CPF do paciente no formato XXX.XXX.XXX-XX: ");
+				scanf("%s", registering_patient->cpf);
+				printf("\n");
+				if(patient_count > 0)
+				{	
+					for(int i = 0; i < patient_count; i++)
+					{
+						if(strcmp(registering_patient->cpf, patient_SUS[i].cpf) == 0)
+						{
+							exist_cpf = 1;
+						}
+					}
+				}
+				if(exist_cpf == 1)
+				{
+					printf("Este CPF já está cadastrado!\n\n");
+				}
+			}while(exist_cpf == 1);
+
+			// REGRA PARA CAPTURAR O TELEFONE DO PACIENTE
+				printf("Digite o número de telefone do paciente: ");
+				scanf("%s", registering_patient->phone_number);
+				printf("\n");
+
+
+			// REGRA PARA CAPTURAR O EMAIL DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
+			printf("Digite o email do paciente: ");
+			scanf("%s", registering_patient->email);
+			printf("\n");
+
+			//TODO
+			//REGRA PARA CAPTURAR DOENÇAS DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
+			int confirm_disease;
+			do{
+				char typed_number[1];
+				confirm_disease = 0;
+				printf("O paciente possui alguma doença listada a baixo? \nSe sim Digite o número correspondente, caso ao contrário digite 0: ");
+				printf("1- Hipertensão    2- Diabetes    3- Obesidade    4- Asma");
+				printf("5- AIDS           6- Câncer      7- Depressão    8- Tuberculose");
+				printf("Digite: ");
+				scanf("%s", typed_number);
+				if(	strcmp(typed_number, "1") == 0 && strcmp(typed_number, "2") == 0 && strcmp(typed_number, "3") == 0 && 
+					strcmp(typed_number, "4") == 0 && strcmp(typed_number, "5") == 0 && strcmp(typed_number, "") == 0 &&
+					strcmp(typed_number, "7") == 0 && strcmp(typed_number, "8") == 0 )
+				{
+
+					switch (atoi(typed_number))
+					{
+					case 1:  
+						registering_patient->disease = "Hipertensão";
+						break;
+					case 2:  
+						/* code */
+						break;
+					case 3:  
+						/* code */
+						break;
+					case 4:  
+						/* code */
+						break;
+					case 5:  
+						/* code */
+						break;
+					case 6:  
+						/* code */
+						break;
+					case 7:  
+						/* code */
+						break;
+					case 8:  
+						/* code */
+						break;
+					
+					default:
+						break;
+					}
+				}
+			}while(confirm_disease == 1);
+
+
 
 			int exist_cns;
 			do{

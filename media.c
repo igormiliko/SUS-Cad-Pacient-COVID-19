@@ -17,20 +17,27 @@ int calc_days_in_year(int year, int month, int day)
 // Loop para verificar se o ano é bissexto ou normal e adicioná-lo
 // ao total de dias para ter uma precisão melhor na hora de calcular
     for(int i = 0; i < year; i++)
-    {
-        if(year % 4 == 0) 
+    {   
+        if(i % 4 == 0) 
         {
-            if(year % 100 == 0)
+            if(i % 100 == 0)
             {
-                if(year % 400 == 0)
+                if(i % 400 == 0)
                 {
                     total_days +=366;
-                } else { 
-                    total_days +=365; }
-            } else{ 
-               total_days +=365; }
-        }else{ 
-            total_days +=365; }
+                    
+                }
+                else { 
+                    total_days +=365;
+                }
+            }
+            else{ 
+               total_days +=365;
+            }
+        }
+        else{ 
+            total_days +=365;
+        }
     }
 
 // Adicionando os dias nos meses até o mês anterior
@@ -61,9 +68,33 @@ int calc_days_in_year(int year, int month, int day)
 
 int main(void)
 {
-    int total_days = 0;
-    int ano = 2020;
+    int confirm_cpf = 0;
+    do{
+        char c = ".";
+        char u = "-";
+        char cpf[14];
 
-    ano = calc_days_in_year(ano, 2, 27);
+        printf("Data de nascimento:(__/__/__) ");
+        scanf("%s", cpf);
+        printf("\n");
+
+        char um = cpf[3];
+        char dois = cpf[7];
+        char tres = cpf[11];        
+        
+        int len = strlen(cpf);
+        
+        int right_format = strcmp(&um , &c) == 0 &&
+                            strcmp(&dois, &c) == 0 &&
+                             strcmp(&tres, &u) == 0 ? 0 : 1;
+
+        printf("Desgraça: %d\n",strcmp("a" , "b"));
+        printf("Desgraça: %d\n",strcmp(&dois, &c));
+        printf("Desgraça: %d\n",strcmp(&tres, &u));
+
+        confirm_cpf = right_format == 0 && len == 14 ? 0 : 1;
+    }while(confirm_cpf == 1);
+
+    printf("Ok\n");
 
 }
