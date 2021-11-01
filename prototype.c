@@ -230,6 +230,10 @@ static int sign_in()
 
 			int exist_user_name;
 			do{
+<<<<<<< HEAD
+=======
+				exist_user_name = 0;
+>>>>>>> master
 				printf("Cadastre o seu nome de usuário (sem espaços): ");
 				ler_string( registering_user->nick_name, 60);
 				printf("\n");
@@ -242,10 +246,13 @@ static int sign_in()
 							exist_user_name = 1;
 							printf("Nome de usuário já existe!\n");
 						}
+<<<<<<< HEAD
 						else
 						{
 							exist_user_name = 1;
 						}
+=======
+>>>>>>> master
 					}
 				}
 			}while(exist_user_name == 1);
@@ -665,6 +672,7 @@ int cadastrar_paciente()
 			// 		}
 			// 	}
 			// }while(confirm_disease == 1);
+<<<<<<< HEAD
 
 
 
@@ -672,6 +680,15 @@ int cadastrar_paciente()
 			do{
 				exist_cns = 0;
 
+=======
+
+
+
+			int exist_cns;
+			do{
+				exist_cns = 0;
+
+>>>>>>> master
 				printf("CNS (Cartão Nacional de Saúde): ");
 				scanf("%s", registering_patient->cns);
 				printf("\n");
@@ -1147,8 +1164,13 @@ int main(void) {
 		else
 		{	
 
+<<<<<<< HEAD
 			logged_user = log_in();
 			//to_cycle = 2;
+=======
+			//logged_user = log_in();
+			logged_user = 2;
+>>>>>>> master
 
 			if(logged_user > -1) 
 			{
