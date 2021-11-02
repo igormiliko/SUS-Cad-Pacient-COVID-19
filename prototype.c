@@ -220,9 +220,6 @@ static int sign_in()
 				strcpy(registering_user->type, "ENFERMEIRO");
 			}
 
-
-
-			//TODO
 			printf("Cadastre o seu nome completo: ");
 			ler_string( registering_user->name, 60);
 			printf("\n");
@@ -230,10 +227,6 @@ static int sign_in()
 
 			int exist_user_name;
 			do{
-<<<<<<< HEAD
-=======
-				exist_user_name = 0;
->>>>>>> master
 				printf("Cadastre o seu nome de usuário (sem espaços): ");
 				ler_string( registering_user->nick_name, 60);
 				printf("\n");
@@ -246,13 +239,10 @@ static int sign_in()
 							exist_user_name = 1;
 							printf("Nome de usuário já existe!\n");
 						}
-<<<<<<< HEAD
 						else
 						{
 							exist_user_name = 1;
 						}
-=======
->>>>>>> master
 					}
 				}
 			}while(exist_user_name == 1);
@@ -455,7 +445,7 @@ int cadastrar_paciente()
 	if(registering_patient)
 	{	
 		do{
-			// a função ler_string aceita espaços
+			// //a função ler_string aceita espaços
 			// printf("Nome: ");
 			// ler_string(registering_patient->nome, 60);
 			// printf("\n");
@@ -544,16 +534,6 @@ int cadastrar_paciente()
 
 			// }while(confirm_born_date == 1);
 
-
-			// /*
-			// 	TODO
-
-			// 	1. CPF;
-			// 	2. PHONE NUMBER;
-			// 	3. EMAIL;
-			// 	4. DISEASE;
-			// */
-			// // REGRA PARA CAPTURAR O CPF DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
 			// // XXX.XXX.XXX-XX
 			// int exist_cpf;
 			// int correct_typed_cpf;
@@ -598,97 +578,73 @@ int cadastrar_paciente()
 
 			// }while(confirm_phone_typed == 1);
 
-			//TODO
 			// REGRA PARA CAPTURAR O EMAIL DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
-			int confirm_email_typed = 0;
+			//TODO
+			int confirm_email_typed = 1;
 			char email[70];
+			int a = "@";
+			char * ptr;
 			do{
 				printf("Digite o email do paciente: ");
 				scanf("%s", email);
 				printf("\n");
+				ptr = strchr(email, a);
+			}while(ptr == NULL);
 
-				int ix_arro; 
-				for(int i = 0; i < strlen(email); i++)
-				{	
-					if(&email[i] == "@")
+			//REGRA PARA CAPTURAR DOENÇAS DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
+			int confirm_disease;
+			do{
+
+				char disease[12];
+				char typed_number[1];
+				confirm_disease = 0;
+				printf("O paciente possui alguma doença listada a baixo? \nSe sim Digite o número correspondente, caso ao contrário digite 0:\n");
+				printf("1- Hipertensão    2- Diabetes    3- Obesidade    4- Asma\n");
+				printf("5- AIDS           6- Câncer      7- Depressão    8- Tuberculose\n\n");
+				printf("Digite: ");
+				scanf("%s", typed_number);
+				if(	strcmp(typed_number, "1") == 0 || strcmp(typed_number, "2") == 0 || strcmp(typed_number, "3") == 0 || 
+					strcmp(typed_number, "4") == 0 || strcmp(typed_number, "5") == 0 || strcmp(typed_number, "") == 0 ||
+					strcmp(typed_number, "7") == 0 || strcmp(typed_number, "8") == 0 )
+				{
+
+					switch (atoi(typed_number))
 					{
-						printf("Aqui ó, seu inteligente %d)))==> %c\n\n\n", i, email[i]);
+					case 1:  
+						strcpy(registering_patient->disease, "Hipertensão");
+						break;
+					case 2:  
+						strcpy(registering_patient->disease, "Diabetes");
+						break;
+					case 3:  
+						strcpy(registering_patient->disease, "Obesidade");
+						break;
+					case 4:  
+						strcpy(registering_patient->disease, "Asma");
+						break;
+					case 5:  
+						strcpy(registering_patient->disease, "AIDS");
+						break;
+					case 6:  
+						strcpy(registering_patient->disease, "Câncer");
+						break;
+					case 7:  
+						strcpy(registering_patient->disease, "Depressão");
+						break;
+					case 8:  
+						strcpy(registering_patient->disease, "Tuberculose");
+						break;
+					
+					default:
+						break;
 					}
 				}
-
-				confirm_email_typed = strcmp(email[ix_arro], "@") == 0 ? 0 : 1;
-				if(confirm_email_typed == 1)
-				{
-					printf("Formato inválido!!!");
-				}
-
-			}while(confirm_email_typed == 1);
-
-			//TODO
-			//REGRA PARA CAPTURAR DOENÇAS DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
-			// int confirm_disease;
-			// do{
-			// 	char typed_number[1];
-			// 	confirm_disease = 0;
-			// 	printf("O paciente possui alguma doença listada a baixo? \nSe sim Digite o número correspondente, caso ao contrário digite 0: ");
-			// 	printf("1- Hipertensão    2- Diabetes    3- Obesidade    4- Asma");
-			// 	printf("5- AIDS           6- Câncer      7- Depressão    8- Tuberculose");
-			// 	printf("Digite: ");
-			// 	scanf("%s", typed_number);
-			// 	if(	strcmp(typed_number, "1") == 0 && strcmp(typed_number, "2") == 0 && strcmp(typed_number, "3") == 0 && 
-			// 		strcmp(typed_number, "4") == 0 && strcmp(typed_number, "5") == 0 && strcmp(typed_number, "") == 0 &&
-			// 		strcmp(typed_number, "7") == 0 && strcmp(typed_number, "8") == 0 )
-			// 	{
-
-			// 		switch (atoi(typed_number))
-			// 		{
-			// 		case 1:  
-			// 			registering_patient->disease = "Hipertensão";
-			// 			break;
-			// 		case 2:  
-			// 			/* code */
-			// 			break;
-			// 		case 3:  
-			// 			/* code */
-			// 			break;
-			// 		case 4:  
-			// 			/* code */
-			// 			break;
-			// 		case 5:  
-			// 			/* code */
-			// 			break;
-			// 		case 6:  
-			// 			/* code */
-			// 			break;
-			// 		case 7:  
-			// 			/* code */
-			// 			break;
-			// 		case 8:  
-			// 			/* code */
-			// 			break;
-					
-			// 		default:
-			// 			break;
-			// 		}
-			// 	}
-			// }while(confirm_disease == 1);
-<<<<<<< HEAD
-
-
+			}while(confirm_disease == 1);
 
 			int exist_cns;
 			do{
 				exist_cns = 0;
 
-=======
-
-
-
-			int exist_cns;
-			do{
-				exist_cns = 0;
-
->>>>>>> master
 				printf("CNS (Cartão Nacional de Saúde): ");
 				scanf("%s", registering_patient->cns);
 				printf("\n");
@@ -708,14 +664,36 @@ int cadastrar_paciente()
 				}
 			}while(exist_cns == 1);
 
-				printf("Altura em metros: ");
-				scanf("%f", &registering_patient->height);
+
+			//TODO
+			int confirm_height = 1;
+			char str_height[4];
+			do{
+				printf("Altura em metros X.XX: ");
+				scanf("%s",str_height);
 				printf("\n");
 				
-				printf("Peso em quilogramas: ");
-				scanf("%f", &registering_patient->weight);
-				printf("\n");
+				if(strcmp(&str_height[1], ".") == 0)
+				{
+					confirm_height = 0;
+				}
+				registering_patient->height = atof(str_height);
 
+			}while(confirm_height == 1);
+
+			//TODO
+			int confirm_weight = 1;
+			char str_weight[4];
+			do{
+				printf("Peso em quilogramas: ");
+				scanf("%s", str_weight);
+				printf("\n");
+				if(strcmp(&str_weight[1],".") == 0 || strcmp(&str_weight[2],".") == 0 || strcmp(&str_weight[3],".") == 0 )
+				{
+					confirm_weight = 0;
+				}
+				registering_patient->weight = atof(str_weight);
+			}while(confirm_weight == 1);
 			// Algoritimo para confirmar se o usuário digitou a data no formato correto
 			int confirm_type_date;
 			do{
@@ -761,9 +739,23 @@ int cadastrar_paciente()
 			}while(type_confirm_plus_minus == 1);
 			
 			
-
+			system("clear");
 			char confirm_char;
 			do{
+				printf("Nome: %s\n",registering_patient->nome);
+				printf("CPF: %s\n",registering_patient->cpf);
+				printf("CNS: %s\n",registering_patient->cns);
+				printf("Data de Nascimento: %s\n",registering_patient->born_date);
+				printf("Idade: %d\n",registering_patient->age);
+				printf("Sexo: %s\n",registering_patient->sex);
+				printf("Altura: %.2f\n",registering_patient->height);
+				printf("Peso: %.2f\n",registering_patient->weight);
+				printf("Email: %s\n",registering_patient->email);
+				printf("Número de celular: %s\n",registering_patient->phone_number);
+				printf("Data do exame de COVID: %s\n",registering_patient->consult_data);
+				printf("Contato com infectado na última semana? %s\n",registering_patient->last_week_contact);
+				printf("Resultado do exame de COVID: %s\n",registering_patient->COVID_19);
+				printf("Principal doença crônica: %s\n",registering_patient->disease);
 				printf("Os dados do paciente estão corretos? Digite s/n -> ");
 				scanf("%s", &confirm_char);
 				printf("\n");
@@ -779,7 +771,7 @@ int cadastrar_paciente()
 		patient_SUS[patient_count] = *registering_patient;
 		free(registering_patient);
 	}
-	
+	system("clear");
 	patient_count++;
 	return 0;
 }
@@ -1164,13 +1156,8 @@ int main(void) {
 		else
 		{	
 
-<<<<<<< HEAD
-			logged_user = log_in();
-			//to_cycle = 2;
-=======
 			//logged_user = log_in();
 			logged_user = 2;
->>>>>>> master
 
 			if(logged_user > -1) 
 			{
