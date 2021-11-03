@@ -489,67 +489,67 @@ int cadastrar_paciente()
 				//scanf("%d", &registering_patient->age);
 				int len = strlen(registering_patient->born_date);
 				
-			// 	int const_bar = strcmp(&registering_patient->born_date[2], "/")  &&
-			// 					strcmp(&registering_patient->born_date[5], "/")  ? 0 : 1;
+				int const_bar = strcmp(&registering_patient->born_date[2], "/")  &&
+								strcmp(&registering_patient->born_date[5], "/")  ? 0 : 1;
 
-			// 	confirm_born_date = const_bar == 0 && len == 10 ? 0 : 1;
+				confirm_born_date = const_bar == 0 && len == 10 ? 0 : 1;
 
-			// 	if(confirm_born_date == 1)
-			// 	{
-			// 		printf("Formato inválido!!\n");
-			// 	}
-			// 	else
-			// 	{
-			// 		//Se a data digitada estiver no formato válido fará o cálculo da idade
-			// 		struct tm *local;
-			// 		local = (struct tm*)malloc(sizeof(struct tm));
-			// 		time_t t;
-			// 		t= time(NULL);
-			// 		local=localtime(&t);
-			// 		char *to_int = malloc(sizeof(char) * 4);
+				if(confirm_born_date == 1)
+				{
+					printf("Formato inválido!!\n");
+				}
+				else
+				{
+					//Se a data digitada estiver no formato válido fará o cálculo da idade
+					struct tm *local;
+					local = (struct tm*)malloc(sizeof(struct tm));
+					time_t t;
+					t= time(NULL);
+					local=localtime(&t);
+					char *to_int = malloc(sizeof(char) * 4);
 
-			// 		int patient_born_day, patient_born_month, patient_born_year;
-			// 		int current_day, current_month, current_year;
-			// 		int computing_age;
+					int patient_born_day, patient_born_month, patient_born_year;
+					int current_day, current_month, current_year;
+					int computing_age;
 
-			// 		//Pegando a data atual
-			// 		current_day = local->tm_mday;
-			// 		current_month = local->tm_mon+1;
-			// 		current_year = local->tm_year+1900;    
+					//Pegando a data atual
+					current_day = local->tm_mday;
+					current_month = local->tm_mon+1;
+					current_year = local->tm_year+1900;    
 
-			// 		// Transformando o dia em inteiro
-			// 		to_int[0] = registering_patient->born_date[0];
-			// 		to_int[1] = registering_patient->born_date[1];
-			// 		patient_born_day = atoi(to_int);
+					// Transformando o dia em inteiro
+					to_int[0] = registering_patient->born_date[0];
+					to_int[1] = registering_patient->born_date[1];
+					patient_born_day = atoi(to_int);
 
-			// 		// Transformando o mês em inteiro
-			// 		to_int[0] = registering_patient->born_date[3];
-			// 		to_int[1] = registering_patient->born_date[4];
-			// 		patient_born_month = atoi(to_int);
+					// Transformando o mês em inteiro
+					to_int[0] = registering_patient->born_date[3];
+					to_int[1] = registering_patient->born_date[4];
+					patient_born_month = atoi(to_int);
 
-			// 		// Transformando o ano em inteiro
-			// 		to_int[0] = registering_patient->born_date[6];
-			// 		to_int[1] = registering_patient->born_date[7];
-			// 		to_int[2] = registering_patient->born_date[8];
-			// 		to_int[3] = registering_patient->born_date[9];
-			// 		patient_born_year = atoi(to_int);
+					// Transformando o ano em inteiro
+					to_int[0] = registering_patient->born_date[6];
+					to_int[1] = registering_patient->born_date[7];
+					to_int[2] = registering_patient->born_date[8];
+					to_int[3] = registering_patient->born_date[9];
+					patient_born_year = atoi(to_int);
 					
-			// 		// Calculando a idade do paciente
-			// 		computing_age = current_year - patient_born_year;
+					// Calculando a idade do paciente
+					computing_age = current_year - patient_born_year;
 
-			// 		if(current_month == patient_born_month)
-			// 		{
-			// 			if(current_day < patient_born_day)
-			// 			{
-			// 				computing_age--;
-			// 			}
-			// 		}
-			// 		else if(current_month < patient_born_month)
-			// 		{
-			// 			computing_age--;
-			// 		}
-			// 		registering_patient->age = computing_age;
-			// 		printf("Idade: %d\n\n", registering_patient->age);
+					if(current_month == patient_born_month)
+					{
+						if(current_day < patient_born_day)
+						{
+							computing_age--;
+						}
+					}
+					else if(current_month < patient_born_month)
+					{
+						computing_age--;
+					}
+					registering_patient->age = computing_age;
+					printf("Idade: %d\n\n", registering_patient->age);
 					
 				}
 
@@ -742,6 +742,7 @@ int cadastrar_paciente()
 				}
 				registering_patient->weight = atof(str_weight);
 			}while(confirm_weight == 1);
+
 			// Algoritimo para confirmar se o usuário digitou a data no formato correto
 			int confirm_type_date;
 			do{
