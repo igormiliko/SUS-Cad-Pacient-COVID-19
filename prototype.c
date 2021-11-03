@@ -137,7 +137,7 @@ static int get_mode(){
 		compare_mode = strcmp(mode, "0") == 0 || strcmp(mode, "1") == 0 ? 0 : 1;
 
 	}while(compare_mode != 0 );
-
+	system("clear");
 	return strcmp(mode, "0") == 0 ? 0 : 1;
 }
 
@@ -164,94 +164,114 @@ static int sign_in()
 	{
 		do{
 		printf("|--------------- CADASTRAR USUÁRIO ---------------|\n\n");
-			do{
-				printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
-				scanf("%s", user_conseil);
-				printf("\n");
-				to_compare = strcmp(user_conseil, "CRM") == 0 || strcmp(user_conseil, "CRE") == 0 ? 0 : 1;
-			}while(to_compare != 0);
+			// do{
+			// 	printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
+			// 	scanf("%s", user_conseil);
+			// 	printf("\n");
+			// 	to_compare = strncmp(user_conseil, "CRM", 4) == 0 || strncmp(user_conseil, "CRE", 4) == 0 ? 0 : 1;
+			// }while(to_compare != 0);
 
 
-			int confirm_conseil;
-			if(strcmp(user_conseil, "CRM") == 0)
-			{	
-				do{
-					confirm_conseil = 0;
-					printf("Digite o seu CRM: ");
-					scanf("%s", registering_user->CRM);
-					printf("\n");
-					if(user_count > 0) {
-						for(int i = 0; i < user_count; i++ )
-						{
-							if(strcmp(registering_user->CRM, cad_user[i].CRM) == 0)
-							{
-								confirm_conseil = 1;
-							}
-						}
-					}
-					if(confirm_conseil == 1)
-					{
-						printf("Este CRM já está cadastrado!\n");
-					}
-				}while(confirm_conseil == 1);
-				strcpy(registering_user->type, "MÉDICO");
-			}
-			else
-			{
-				do{
-					confirm_conseil = 0;
-					printf("Digite o seu CRE: ");
-					scanf("%s", registering_user->CRE);
-					printf("\n");
-					if(user_count > 0) {
-						for(int i = 0; i < user_count; i++ )
-						{
-							if(strcmp(registering_user->CRE, cad_user[i].CRE) == 0)
-							{
-								confirm_conseil = 1;
-							}
-						}
-					}
-					if(confirm_conseil == 1)
-					{
-						printf("Este CRE já está cadastrado!\n");
-					}
-				}while(confirm_conseil == 1);
-				strcpy(registering_user->type, "ENFERMEIRO");
-			}
+			// int confirm_conseil;
+			// if(strcmp(user_conseil, "CRM") == 0)
+			// {	
+			// 	do{
+			// 		confirm_conseil = 0;
+			// 		printf("Digite o seu CRM: ");
+			// 		scanf("%s", registering_user->CRM);
+			// 		printf("\n");
+			// 		if(user_count > 0) {
+			// 			for(int i = 0; i < user_count; i++ )
+			// 			{
+			// 				if(strcmp(registering_user->CRM, cad_user[i].CRM) == 0)
+			// 				{
+			// 					confirm_conseil = 1;
+			// 				}
+			// 			}
+			// 		}
+			// 		if(confirm_conseil == 1)
+			// 		{
+			// 			printf("Este CRM já está cadastrado!\n");
+			// 		}
+			// 	}while(confirm_conseil == 1);
+			// 	strcpy(registering_user->type, "MÉDICO");
+			// }
+			// else
+			// {
+			// 	do{
+			// 		confirm_conseil = 0;
+			// 		printf("Digite o seu CRE: ");
+			// 		scanf("%s", registering_user->CRE);
+			// 		printf("\n");
+			// 		if(user_count > 0) {
+			// 			for(int i = 0; i < user_count; i++ )
+			// 			{
+			// 				if(strcmp(registering_user->CRE, cad_user[i].CRE) == 0)
+			// 				{
+			// 					confirm_conseil = 1;
+			// 				}
+			// 			}
+			// 		}
+			// 		if(confirm_conseil == 1)
+			// 		{
+			// 			printf("Este CRE já está cadastrado!\n");
+			// 		}
+			// 	}while(confirm_conseil == 1);
+			// 	strcpy(registering_user->type, "ENFERMEIRO");
+			// }
 
-			printf("Cadastre o seu nome completo: ");
-			ler_string( registering_user->name, 60);
-			printf("\n");
-			//printf("%s", registering_user->name);
+			// printf("Cadastre o seu nome completo: ");
+			// ler_string( registering_user->name, 60);
+			// printf("\n");
+			// //printf("%s", registering_user->name);
 
-			int exist_user_name;
-			do{
-				printf("Cadastre o seu nome de usuário (sem espaços): ");
-				ler_string( registering_user->nick_name, 60);
-				printf("\n");
-				if(user_count > 0)
-				{
-					for(int i = 0; i < user_count; i++) 
-					{
-						if(strcmp(registering_user->nick_name, cad_user[i].nick_name) == 0)
-						{
-							exist_user_name = 1;
-							printf("Nome de usuário já existe!\n");
-						}
-						else
-						{
-							exist_user_name = 1;
-						}
-					}
-				}
-			}while(exist_user_name == 1);
+			// int exist_user_name = 0;
+			// int is_space;
+			// do{
+			// 	is_space = 0;
 
+			// 	printf("Cadastre o seu nome de usuário (sem espaços): ");
+			// 	ler_string( registering_user->nick_name, 60);
+			// 	printf("\n");
+				
+			// 	char *temp;
+			// 	for(int i = 0; i < strlen(registering_user->nick_name); i++)
+			// 	{
+			// 		temp = malloc(sizeof(char));
+			// 		temp = &registering_user->nick_name[i];
+			// 		if(strncmp(temp, " ", 1) == 0)
+			// 		{	
+			// 			printf("Formato inválido!!!\n");
+			// 			is_space = 1;
+			// 		}
+			// 	}
+			// 	if(is_space == 0)
+			// 	{
+			// 		if(user_count > 0)
+			// 		{
+			// 			for(int i = 0; i < user_count; i++) 
+			// 			{
+			// 				if(strcmp(registering_user->nick_name, cad_user[i].nick_name) == 0)
+			// 				{
+			// 					exist_user_name = 1;
+			// 					printf("Nome de usuário já existe!\n");
+			// 				}
+			// 				else
+			// 				{
+			// 					exist_user_name = 0;
+			// 				}
+			// 			}
+			// 		}
+			// 	}			
+			// }while(exist_user_name == 1 || is_space == 1);
+			//TODO
 			do{
 				printf("Qual o estado onde você trabalha(Utilize a forma abreviada 'DF')? ");
 				scanf("%s", registering_user->estado);
 				printf("\n");
-			}while(strlen(registering_user->estado) != 2);
+			}while(strlen(registering_user->estado) != 2 &&
+					isupper(registering_user->estado[0]) != 0 &&
+					isupper(registering_user->estado[1]) != 0);
 
 			printf("Qual o município onde você trabalha? ");
 			ler_string(registering_user->municipio,30);
@@ -322,7 +342,8 @@ static int sign_in()
 		
 					printf("NOME: %s\n", registering_user->name);
 					printf("Nome de usuário: %s\n", registering_user->nick_name);
-					if(strcmp(user_conseil, "CRM") == 0)
+
+					if(strncmp(user_conseil, "CRM", 3) == 0)
 					{
 						printf("O seu CRM é: %s", registering_user->CRM);
 						printf("\n");
@@ -445,151 +466,173 @@ int cadastrar_paciente()
 	if(registering_patient)
 	{	
 		do{
-			// //a função ler_string aceita espaços
-			// printf("Nome: ");
-			// ler_string(registering_patient->nome, 60);
-			// printf("\n");
+			//a função ler_string aceita espaços
+			printf("Nome: ");
+			ler_string(registering_patient->nome, 60);
+			printf("\n");
 
-			// int confirm_typed_sex;
-			// do{
-			// 	printf("Sexo: M/F ");
-			// 	ler_string(registering_patient->sex, 2);
-			// 	printf("\n");
-			// 	confirm_typed_sex = strcmp(registering_patient->sex, "M") == 0 ||
-			// 					strcmp(registering_patient->sex, "F") == 0 ? 0 : 1;
-			// }while(confirm_typed_sex == 1);
+			int confirm_typed_sex;
+			do{
+				printf("Sexo: M/F ");
+				ler_string(registering_patient->sex, 2);
+				printf("\n");
+				confirm_typed_sex = strcmp(registering_patient->sex, "M") == 0 ||
+								strcmp(registering_patient->sex, "F") == 0 ? 0 : 1;
+			}while(confirm_typed_sex == 1);
 
-			// // Capturar a data de nascimentio do paciente e calcular sua idade
-			// int confirm_born_date = 0;
-			// do{
-			// 	printf("Data de nascimento:(__/__/__) ");
-			// 	scanf("%s", registering_patient->born_date);
-			// 	printf("\n");
-			// 	//scanf("%d", &registering_patient->age);
-			// 	int len = strlen(registering_patient->born_date);
+			// Capturar a data de nascimentio do paciente e calcular sua idade
+			int confirm_born_date = 0;
+			do{
+				printf("Data de nascimento:(__/__/__) ");
+				scanf("%s", registering_patient->born_date);
+				printf("\n");
+				//scanf("%d", &registering_patient->age);
+				int len = strlen(registering_patient->born_date);
 				
-			// 	int const_bar = strcmp(&registering_patient->born_date[2], "/")  &&
-			// 					strcmp(&registering_patient->born_date[5], "/")  ? 0 : 1;
+				int const_bar = strcmp(&registering_patient->born_date[2], "/")  &&
+								strcmp(&registering_patient->born_date[5], "/")  ? 0 : 1;
 
-			// 	confirm_born_date = const_bar == 0 && len == 10 ? 0 : 1;
+				confirm_born_date = const_bar == 0 && len == 10 ? 0 : 1;
 
-			// 	if(confirm_born_date == 1)
-			// 	{
-			// 		printf("Formato inválido!!\n");
-			// 	}
-			// 	else
-			// 	{
-			// 		//Se a data digitada estiver no formato válido fará o cálculo da idade
-			// 		struct tm *local;
-			// 		local = (struct tm*)malloc(sizeof(struct tm));
-			// 		time_t t;
-			// 		t= time(NULL);
-			// 		local=localtime(&t);
-			// 		char *to_int = malloc(sizeof(char) * 4);
+				if(confirm_born_date == 1)
+				{
+					printf("Formato inválido!!\n");
+				}
+				else
+				{
+					//Se a data digitada estiver no formato válido fará o cálculo da idade
+					struct tm *local;
+					local = (struct tm*)malloc(sizeof(struct tm));
+					time_t t;
+					t= time(NULL);
+					local=localtime(&t);
+					char *to_int = malloc(sizeof(char) * 4);
 
-			// 		int patient_born_day, patient_born_month, patient_born_year;
-			// 		int current_day, current_month, current_year;
-			// 		int computing_age;
+					int patient_born_day, patient_born_month, patient_born_year;
+					int current_day, current_month, current_year;
+					int computing_age;
 
-			// 		//Pegando a data atual
-			// 		current_day = local->tm_mday;
-			// 		current_month = local->tm_mon+1;
-			// 		current_year = local->tm_year+1900;    
+					//Pegando a data atual
+					current_day = local->tm_mday;
+					current_month = local->tm_mon+1;
+					current_year = local->tm_year+1900;    
 
-			// 		// Transformando o dia em inteiro
-			// 		to_int[0] = registering_patient->born_date[0];
-			// 		to_int[1] = registering_patient->born_date[1];
-			// 		patient_born_day = atoi(to_int);
+					// Transformando o dia em inteiro
+					to_int[0] = registering_patient->born_date[0];
+					to_int[1] = registering_patient->born_date[1];
+					patient_born_day = atoi(to_int);
 
-			// 		// Transformando o mês em inteiro
-			// 		to_int[0] = registering_patient->born_date[3];
-			// 		to_int[1] = registering_patient->born_date[4];
-			// 		patient_born_month = atoi(to_int);
+					// Transformando o mês em inteiro
+					to_int[0] = registering_patient->born_date[3];
+					to_int[1] = registering_patient->born_date[4];
+					patient_born_month = atoi(to_int);
 
-			// 		// Transformando o ano em inteiro
-			// 		to_int[0] = registering_patient->born_date[6];
-			// 		to_int[1] = registering_patient->born_date[7];
-			// 		to_int[2] = registering_patient->born_date[8];
-			// 		to_int[3] = registering_patient->born_date[9];
-			// 		patient_born_year = atoi(to_int);
+					// Transformando o ano em inteiro
+					to_int[0] = registering_patient->born_date[6];
+					to_int[1] = registering_patient->born_date[7];
+					to_int[2] = registering_patient->born_date[8];
+					to_int[3] = registering_patient->born_date[9];
+					patient_born_year = atoi(to_int);
 					
-			// 		// Calculando a idade do paciente
-			// 		computing_age = current_year - patient_born_year;
+					// Calculando a idade do paciente
+					computing_age = current_year - patient_born_year;
 
-			// 		if(current_month == patient_born_month)
-			// 		{
-			// 			if(current_day < patient_born_day)
-			// 			{
-			// 				computing_age--;
-			// 			}
-			// 		}
-			// 		else if(current_month < patient_born_month)
-			// 		{
-			// 			computing_age--;
-			// 		}
-			// 		registering_patient->age = computing_age;
-			// 		printf("Idade: %d\n\n", registering_patient->age);
+					if(current_month == patient_born_month)
+					{
+						if(current_day < patient_born_day)
+						{
+							computing_age--;
+						}
+					}
+					else if(current_month < patient_born_month)
+					{
+						computing_age--;
+					}
+					registering_patient->age = computing_age;
+					printf("Idade: %d\n\n", registering_patient->age);
 					
-			// 	}
+				}
 
-			// }while(confirm_born_date == 1);
+			}while(confirm_born_date == 1);
 
-			// // XXX.XXX.XXX-XX
-			// int exist_cpf;
-			// int correct_typed_cpf;
-			// do{
-			// 	exist_cpf = 0;
+			// XXX.XXX.XXX-XX
+			int exist_cpf;
+			int correct_typed_cpf;
+			do{
+				exist_cpf = 0;
 
-			// 	printf("Digite o CPF do paciente no formato XXX.XXX.XXX-XX: ");
-			// 	scanf("%s", registering_patient->cpf);
-			// 	printf("\n");
+				printf("Digite o CPF do paciente no formato XXX.XXX.XXX-XX: ");
+				scanf("%s", registering_patient->cpf);
+				printf("\n");
 
-			// 	correct_typed_cpf = strlen(registering_patient->cpf) == 14 ? 0 : 1; 
+				correct_typed_cpf = strlen(registering_patient->cpf) == 14 ? 0 : 1; 
 
-			// 	if(patient_count > 0)
-			// 	{	
-			// 		for(int i = 0; i < patient_count; i++)
-			// 		{
-			// 			if(strcmp(registering_patient->cpf, patient_SUS[i].cpf) == 0)
-			// 			{
-			// 				exist_cpf = 1;
-			// 			}
-			// 		}
-			// 	}
-			// 	if(exist_cpf == 1)
-			// 	{
-			// 		printf("Este CPF já está cadastrado!\n\n");
-			// 	}
-			// }while(exist_cpf == 1 || correct_typed_cpf == 1);
+				if(patient_count > 0)
+				{	
+					for(int i = 0; i < patient_count; i++)
+					{
+						if(strcmp(registering_patient->cpf, patient_SUS[i].cpf) == 0)
+						{
+							exist_cpf = 1;
+						}
+					}
+				}
+				if(exist_cpf == 1)
+				{
+					printf("Este CPF já está cadastrado!\n\n");
+				}
+			}while(exist_cpf == 1 || correct_typed_cpf == 1);
 
-			// // REGRA PARA CAPTURAR O TELEFONE DO PACIENTE (XX)98590-8989
-			// int confirm_phone_typed;
-			// do
-			// {
-			// 	printf("Digite o número de telefone do paciente no formato (XX)9XXXX-XXXX: ");
-			// 	scanf("%s", registering_patient->phone_number);
-			// 	printf("\n");
+			// REGRA PARA CAPTURAR O TELEFONE DO PACIENTE (XX)98590-8989
+			int confirm_phone_typed;
+			do
+			{
+				printf("Digite o número de telefone do paciente no formato (XX)9XXXX-XXXX: ");
+				scanf("%s", registering_patient->phone_number);
+				printf("\n");
 
-			// 	confirm_phone_typed = strlen(registering_patient->phone_number) == 14 ? 0 : 1;
-			// 	if(confirm_phone_typed == 1)
-			// 	{
-			// 		printf("Formato de telefone inválido!\n");
-			// 	}
+				confirm_phone_typed = strlen(registering_patient->phone_number) == 14 ? 0 : 1;
+				if(confirm_phone_typed == 1)
+				{
+					printf("Formato de telefone inválido!\n");
+				}
 
-			// }while(confirm_phone_typed == 1);
+			}while(confirm_phone_typed == 1);
 
 			// REGRA PARA CAPTURAR O EMAIL DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
-			//TODO
 			int confirm_email_typed = 1;
+			int find_arr, find_dote = 1;
 			char email[70];
-			int a = "@";
-			char * ptr;
 			do{
 				printf("Digite o email do paciente: ");
 				scanf("%s", email);
 				printf("\n");
-				ptr = strchr(email, a);
-			}while(ptr == NULL);
+				//printf("%c\n", email[0]);
+				char *temp;
+				temp = malloc(sizeof(char));
+				for(int i = 0; i < strlen(email); i++)
+				{
+					temp = &email[i];
+					if(strncmp(temp, "@",1) == 0)
+					{
+						find_arr = 0;
+					}
+					if(strncmp(temp, ".",1) == 0)
+					{
+						find_dote = 0;
+					}
+				}
+				confirm_email_typed = find_arr == 0 && find_dote == 0 ? 0 : 1;
+				if(confirm_email_typed == 1)
+				{
+					printf("Email inválido!!\n");
+				}
+				else
+				{
+					strcpy(registering_patient->email, email);
+				}
+				free(temp);
+			}while(confirm_email_typed == 1);
 
 			//REGRA PARA CAPTURAR DOENÇAS DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
 			int confirm_disease;
@@ -664,36 +707,42 @@ int cadastrar_paciente()
 				}
 			}while(exist_cns == 1);
 
-
-			//TODO
+			// Cadastrar a altura do paciente
 			int confirm_height = 1;
 			char str_height[4];
 			do{
 				printf("Altura em metros X.XX: ");
 				scanf("%s",str_height);
 				printf("\n");
-				
-				if(strcmp(&str_height[1], ".") == 0)
+				int len = strlen(str_height);
+				if( len == 4)
 				{
 					confirm_height = 0;
+					registering_patient->height = atof(str_height);
 				}
-				registering_patient->height = atof(str_height);
-
+				else
+				{
+					printf("Formato inválido!!\n");
+				}
 			}while(confirm_height == 1);
 
-			//TODO
+			// Cadastrar o peso do paciente
 			int confirm_weight = 1;
-			char str_weight[4];
+			char str_weight[6];
 			do{
 				printf("Peso em quilogramas: ");
 				scanf("%s", str_weight);
 				printf("\n");
-				if(strcmp(&str_weight[1],".") == 0 || strcmp(&str_weight[2],".") == 0 || strcmp(&str_weight[3],".") == 0 )
+				int len = strlen(str_weight) ;
+				if((strncmp(&str_weight[1],".",1) == 0 || 
+				    strncmp(&str_weight[2],".",1) == 0 || 
+				    strncmp(&str_weight[3],".",1) == 0 ) && len >= 4 )
 				{
 					confirm_weight = 0;
 				}
 				registering_patient->weight = atof(str_weight);
 			}while(confirm_weight == 1);
+
 			// Algoritimo para confirmar se o usuário digitou a data no formato correto
 			int confirm_type_date;
 			do{
@@ -970,7 +1019,7 @@ int pesquisar_paciente()
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////    PESQUIAR PACIENTE    /////////////////////////////////
+////////////////////////////////////   Cálculos    /////////////////////////////////
 
 int calculos_estatisticos() 
 {
@@ -989,15 +1038,15 @@ int calculos_estatisticos()
 		scanf("%s", number_typed);
 		printf("\n");
 
-		confirm_typed = strcmp(number_typed, "1") == 0 || strcmp(number_typed, "2") == 0 ||
-						strcmp(number_typed, "3") == 0 || strcmp(number_typed, "4") == 0  ? 0 : 1;
+		confirm_typed = strncmp(number_typed, "1",1) == 0 || strncmp(number_typed, "2",1) == 0 ||
+						strncmp(number_typed, "3",1) == 0 || strncmp(number_typed, "4",1) == 0  ? 0 : 1;
 
 	}while(confirm_typed == 1);
 
 
 	char type_of_pacient[1];
 	int confirm_pacient_type;
-	if(strcmp(number_typed, "1") == 0 || strcmp(number_typed, "2") == 0 || strcmp(number_typed, "3") == 0)
+	if(strncmp(number_typed, "1",1) == 0 || strncmp(number_typed, "2",1) == 0 || strncmp(number_typed, "3",1) == 0)
 	{
 		printf("Digite o número correspondente ao tipo de amostra populacional:\n\n");
 		printf("1- Pacientes com COVID-19    2- Pacientes sem COVID-19\n\n");
@@ -1006,25 +1055,30 @@ int calculos_estatisticos()
 			scanf("%s", type_of_pacient);
 			printf("\n");
 
-			confirm_pacient_type = strcmp(type_of_pacient, "1") == 0 || strcmp(type_of_pacient, "2") == 0 ? 0 : 1;
+			confirm_pacient_type = strncmp(type_of_pacient, "1", 1) == 0 || strncmp(type_of_pacient, "2", 1) == 0 ? 0 : 1;
 
 		}while(confirm_pacient_type == 1);
 
-		if(strcmp(number_typed, "1") == 0)
+		if(strncmp(number_typed, "1", 1) == 0)
 		{
-			if(strcmp(type_of_pacient, "1") == 0)
+			if(strncmp(type_of_pacient, "1", 1) == 0)
 			{
 				int i;
 				int positive_pacient = 0;
 				float weight_media = 0.00;
 				for(i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
+					if(strncmp(patient_SUS[i].COVID_19, "+", 1) == 0)
 					{
 						weight_media += patient_SUS[i].weight;
 						positive_pacient++;
 					}
 				}
+					system("clear");
+					printf("          ________________________________________\n");
+					printf("         |                                        |\n");
+					printf("         |    Resultado  da pesquisa  efetuada    |\n");
+					printf("         |________________________________________|\n\n");
 					weight_media = positive_pacient > 0 ? weight_media / (float) positive_pacient : weight_media;
 					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
 					printf("Media do peso corresponde a: %.2fkg\n\n", weight_media);
@@ -1036,12 +1090,17 @@ int calculos_estatisticos()
 				int negative_pacient = 0;
 				for(int i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
+					if(strncmp(patient_SUS[i].COVID_19, "-", 1) == 0)
 					{
 						weight_media += patient_SUS[i].weight;
 						negative_pacient++;
 					}
 				}
+					system("clear");
+					printf("          ________________________________________\n");
+					printf("         |                                        |\n");
+					printf("         |    Resultado  da pesquisa  efetuada    |\n");
+					printf("         |________________________________________|\n\n");
 					weight_media = negative_pacient > 0 ? weight_media / (float) negative_pacient : weight_media;
 					printf("Foram encontrados um total de %d pacientes com resultado negativo para COVID-19.\n\n", negative_pacient);
 					printf("Media do peso: %.2fkg\n\n", weight_media);
@@ -1049,21 +1108,26 @@ int calculos_estatisticos()
 
 			return 1;
 		}
-		else if(strcmp(number_typed, "2") == 0)
+		else if(strncmp(number_typed, "2",1) == 0)
 		{
-			if(strcmp(type_of_pacient, "1") == 0)
+			if(strncmp(type_of_pacient, "1",1) == 0)
 			{
 				int i;
 				int positive_pacient = 0;
 				float height_media = 0.00;
 				for(i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
+					if(strncmp(patient_SUS[i].COVID_19, "+", 1) == 0)
 					{
 						height_media += patient_SUS[i].height;
 						positive_pacient++;
 					}
 				}
+					system("clear");
+					printf("          ________________________________________\n");
+					printf("         |                                        |\n");
+					printf("         |    Resultado  da pesquisa  efetuada    |\n");
+					printf("         |________________________________________|\n\n");
 					height_media = positive_pacient > 0 ? height_media / (float) positive_pacient : height_media;
 					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
 					printf("Media da altura corresponde a: %.2fm\n\n", height_media);
@@ -1075,33 +1139,43 @@ int calculos_estatisticos()
 				int negative_pacient = 0;
 				for(int i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
+					if(strncmp(patient_SUS[i].COVID_19, "-",1) == 0)
 					{
 						height_media += patient_SUS[i].height;
 						negative_pacient++;
 					}
 				}
+					system("clear");
+					printf("          ________________________________________\n");
+					printf("         |                                        |\n");
+					printf("         |    Resultado  da pesquisa  efetuada    |\n");
+					printf("         |________________________________________|\n\n");
 					height_media = negative_pacient > 0 ? height_media / (float) negative_pacient : height_media;
 					printf("Foram encontrados um total de %d pacientes com resultado negativo para COVID-19.\n\n", negative_pacient);
 					printf("Media da altura corresponde a: %.2fkg\n\n", height_media);
 			}
 			return 1;
 		}
-		else if(strcmp(number_typed, "3") == 0)
+		else if(strncmp(number_typed, "3", 1) == 0)
 		{
-			if(strcmp(type_of_pacient, "1") == 0)
+			if(strncmp(type_of_pacient, "1", 1) == 0)
 			{
 				int i;
 				int positive_pacient = 0;
 				float age_media = 0.00;
 				for(i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(patient_SUS[i].COVID_19, "+") == 0)
+					if(strncmp(patient_SUS[i].COVID_19, "+", 1) == 0)
 					{
 						age_media += (float)patient_SUS[i].age;
 						positive_pacient++;
 					}
 				}
+					system("clear");
+					printf("          ________________________________________\n");
+					printf("         |                                        |\n");
+					printf("         |    Resultado  da pesquisa  efetuada    |\n");
+					printf("         |________________________________________|\n\n");
 					age_media = positive_pacient > 0 ? age_media / (float) positive_pacient : age_media;
 					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
 					printf("Media da idade corresponde a: %.2fkg\n\n", age_media);
@@ -1113,12 +1187,17 @@ int calculos_estatisticos()
 				int negative_pacient = 0;
 				for(int i = 0; i < patient_count; i++)
 				{	
-					if(strcmp(patient_SUS[i].COVID_19, "-") == 0)
+					if(strncmp(patient_SUS[i].COVID_19, "-", 1) == 0)
 					{
 						age_media += (float)patient_SUS[i].age;
 						negative_pacient++;
 					}
 				}
+					system("clear");
+					printf("          ________________________________________\n");
+					printf("         |                                        |\n");
+					printf("         |    Resultado  da pesquisa  efetuada    |\n");
+					printf("         |________________________________________|\n\n");
 					age_media = negative_pacient > 0 ? age_media / (float) negative_pacient : age_media;
 					printf("Foram encontrados um total de %d pacientes com resultado negativo para COVID-19.\n\n", negative_pacient);
 					printf("Media da idade corresponde a: %.2fkg\n\n", age_media);
@@ -1129,8 +1208,9 @@ int calculos_estatisticos()
 			return 2;
 		}
 	}
-	else if(strcmp(number_typed, "4") == 0)
+	else if(strncmp(number_typed, "4", 1) == 0)
 	{
+		system("clear");
 		return 1;
 	}
 	return 2;
@@ -1156,8 +1236,8 @@ int main(void) {
 		else
 		{	
 
-			//logged_user = log_in();
-			logged_user = 2;
+			logged_user = log_in();
+			//logged_user = 2;
 
 			if(logged_user > -1) 
 			{
