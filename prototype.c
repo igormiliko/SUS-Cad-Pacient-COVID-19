@@ -7,7 +7,7 @@
 #include <ctype.h>
 #include <malloc.h>
 #include <time.h>
-
+#include "WRITE_IN_JSON.h"
 
 
 
@@ -83,25 +83,6 @@ Professional_health cad_user[100];
 
 int user_count = 0;
 
-
-typedef struct 
-{	
-		char nome[60];
-		char sex[2];
-		char cpf[14];
-		char phone_number[14];
-		int age;
-		char born_date[11];
-		char email[120];
-		char disease[20];
-		float height;
-		float weight;
-		char cns[40];
-		char consult_data[11];
-		char COVID_19[2];
-		char last_week_contact[2];
-} Patient;
-
 Patient patient_SUS[100];
 
 int patient_count = 0;
@@ -164,114 +145,121 @@ static int sign_in()
 	{
 		do{
 		printf("|--------------- CADASTRAR USUÁRIO ---------------|\n\n");
-			// do{
-			// 	printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
-			// 	scanf("%s", user_conseil);
-			// 	printf("\n");
-			// 	to_compare = strncmp(user_conseil, "CRM", 4) == 0 || strncmp(user_conseil, "CRE", 4) == 0 ? 0 : 1;
-			// }while(to_compare != 0);
-
-
-			// int confirm_conseil;
-			// if(strcmp(user_conseil, "CRM") == 0)
-			// {	
-			// 	do{
-			// 		confirm_conseil = 0;
-			// 		printf("Digite o seu CRM: ");
-			// 		scanf("%s", registering_user->CRM);
-			// 		printf("\n");
-			// 		if(user_count > 0) {
-			// 			for(int i = 0; i < user_count; i++ )
-			// 			{
-			// 				if(strcmp(registering_user->CRM, cad_user[i].CRM) == 0)
-			// 				{
-			// 					confirm_conseil = 1;
-			// 				}
-			// 			}
-			// 		}
-			// 		if(confirm_conseil == 1)
-			// 		{
-			// 			printf("Este CRM já está cadastrado!\n");
-			// 		}
-			// 	}while(confirm_conseil == 1);
-			// 	strcpy(registering_user->type, "MÉDICO");
-			// }
-			// else
-			// {
-			// 	do{
-			// 		confirm_conseil = 0;
-			// 		printf("Digite o seu CRE: ");
-			// 		scanf("%s", registering_user->CRE);
-			// 		printf("\n");
-			// 		if(user_count > 0) {
-			// 			for(int i = 0; i < user_count; i++ )
-			// 			{
-			// 				if(strcmp(registering_user->CRE, cad_user[i].CRE) == 0)
-			// 				{
-			// 					confirm_conseil = 1;
-			// 				}
-			// 			}
-			// 		}
-			// 		if(confirm_conseil == 1)
-			// 		{
-			// 			printf("Este CRE já está cadastrado!\n");
-			// 		}
-			// 	}while(confirm_conseil == 1);
-			// 	strcpy(registering_user->type, "ENFERMEIRO");
-			// }
-
-			// printf("Cadastre o seu nome completo: ");
-			// ler_string( registering_user->name, 60);
-			// printf("\n");
-			// //printf("%s", registering_user->name);
-
-			// int exist_user_name = 0;
-			// int is_space;
-			// do{
-			// 	is_space = 0;
-
-			// 	printf("Cadastre o seu nome de usuário (sem espaços): ");
-			// 	ler_string( registering_user->nick_name, 60);
-			// 	printf("\n");
-				
-			// 	char *temp;
-			// 	for(int i = 0; i < strlen(registering_user->nick_name); i++)
-			// 	{
-			// 		temp = malloc(sizeof(char));
-			// 		temp = &registering_user->nick_name[i];
-			// 		if(strncmp(temp, " ", 1) == 0)
-			// 		{	
-			// 			printf("Formato inválido!!!\n");
-			// 			is_space = 1;
-			// 		}
-			// 	}
-			// 	if(is_space == 0)
-			// 	{
-			// 		if(user_count > 0)
-			// 		{
-			// 			for(int i = 0; i < user_count; i++) 
-			// 			{
-			// 				if(strcmp(registering_user->nick_name, cad_user[i].nick_name) == 0)
-			// 				{
-			// 					exist_user_name = 1;
-			// 					printf("Nome de usuário já existe!\n");
-			// 				}
-			// 				else
-			// 				{
-			// 					exist_user_name = 0;
-			// 				}
-			// 			}
-			// 		}
-			// 	}			
-			// }while(exist_user_name == 1 || is_space == 1);
-			//TODO
 			do{
+				printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
+				scanf("%s", user_conseil);
+				printf("\n");
+				to_compare = strncmp(user_conseil, "CRM", 4) == 0 || strncmp(user_conseil, "CRE", 4) == 0 ? 0 : 1;
+			}while(to_compare != 0);
+
+
+			int confirm_conseil;
+			if(strcmp(user_conseil, "CRM") == 0)
+			{	
+				do{
+					confirm_conseil = 0;
+					printf("Digite o seu CRM: ");
+					scanf("%s", registering_user->CRM);
+					printf("\n");
+					if(user_count > 0) {
+						for(int i = 0; i < user_count; i++ )
+						{
+							if(strcmp(registering_user->CRM, cad_user[i].CRM) == 0)
+							{
+								confirm_conseil = 1;
+							}
+						}
+					}
+					if(confirm_conseil == 1)
+					{
+						printf("Este CRM já está cadastrado!\n");
+					}
+				}while(confirm_conseil == 1);
+				strcpy(registering_user->type, "MÉDICO");
+			}
+			else
+			{
+				do{
+					confirm_conseil = 0;
+					printf("Digite o seu CRE: ");
+					scanf("%s", registering_user->CRE);
+					printf("\n");
+					if(user_count > 0) {
+						for(int i = 0; i < user_count; i++ )
+						{
+							if(strcmp(registering_user->CRE, cad_user[i].CRE) == 0)
+							{
+								confirm_conseil = 1;
+							}
+						}
+					}
+					if(confirm_conseil == 1)
+					{
+						printf("Este CRE já está cadastrado!\n");
+					}
+				}while(confirm_conseil == 1);
+				strcpy(registering_user->type, "ENFERMEIRO");
+			}
+
+			printf("Cadastre o seu nome completo: ");
+			ler_string( registering_user->name, 60);
+			printf("\n");
+			//printf("%s", registering_user->name);
+
+			int exist_user_name = 0;
+			int is_space;
+			do{
+				is_space = 0;
+
+				printf("Cadastre o seu nome de usuário (sem espaços): ");
+				ler_string( registering_user->nick_name, 60);
+				printf("\n");
+				
+				char *temp;
+				for(int i = 0; i < strlen(registering_user->nick_name); i++)
+				{
+					temp = malloc(sizeof(char));
+					temp = &registering_user->nick_name[i];
+					if(strncmp(temp, " ", 1) == 0)
+					{	
+						printf("Formato inválido!!!\n");
+						is_space = 1;
+					}
+				}
+				if(is_space == 0)
+				{
+					if(user_count > 0)
+					{
+						for(int i = 0; i < user_count; i++) 
+						{
+							if(strcmp(registering_user->nick_name, cad_user[i].nick_name) == 0)
+							{
+								exist_user_name = 1;
+								printf("Nome de usuário já existe!\n");
+							}
+							else
+							{
+								exist_user_name = 0;
+							}
+						}
+					}
+				}			
+			}while(exist_user_name == 1 || is_space == 1);
+
+			int confirm_state;
+			do{
+				confirm_state = 1;
 				printf("Qual o estado onde você trabalha(Utilize a forma abreviada 'DF')? ");
 				scanf("%s", registering_user->estado);
 				printf("\n");
-			}while(strlen(registering_user->estado) != 2 &&
-					isupper(registering_user->estado[0]) != 0 &&
-					isupper(registering_user->estado[1]) != 0);
+				
+				int len = strlen(registering_user->estado);
+				if(len == 2)
+				{
+					confirm_state = isupper(registering_user->estado[0]) != 0 &&
+									isupper(registering_user->estado[1]) != 0 ? 0 : 1;
+				}
+			}while(confirm_state == 1);
 
 			printf("Qual o município onde você trabalha? ");
 			ler_string(registering_user->municipio,30);
@@ -308,7 +296,8 @@ static int sign_in()
 
 					
 				if(strong_ix > 0.325)
-				{
+				{	
+					system("clear");
 						if(strncmp(registering_user->senha, compare_pass, 8) == 0)
 						{
 							to_compare = 0;
@@ -429,7 +418,8 @@ int log_in()
 		printf("\n");
 
 		if(strcmp(user_password, cad_user[user_to_compare_password].senha) == 0)
-		{
+		{	
+			system("clear");
 			user_password_correct = 0;
 			printf("          ___________________________________________\n");
 			printf("         |                                           |\n");
@@ -447,7 +437,7 @@ int log_in()
 			printf("         |___________________________________________|\n\n");
 		}
 	}while(user_password_correct == 1);
-
+	system("clear");
 	return 1;
 }
 
@@ -555,7 +545,7 @@ int cadastrar_paciente()
 
 			}while(confirm_born_date == 1);
 
-			// XXX.XXX.XXX-XX
+			// TODO
 			int exist_cpf;
 			int correct_typed_cpf;
 			do{
@@ -607,17 +597,13 @@ int cadastrar_paciente()
 				printf("Digite o email do paciente: ");
 				scanf("%s", email);
 				printf("\n");
-				//printf("%c\n", email[0]);
-				char *temp;
-				temp = malloc(sizeof(char));
 				for(int i = 0; i < strlen(email); i++)
 				{
-					temp = &email[i];
-					if(strncmp(temp, "@",1) == 0)
+					if(strncmp(&email[i], "@",1) == 0)
 					{
 						find_arr = 0;
 					}
-					if(strncmp(temp, ".",1) == 0)
+					if(strncmp(&email[i], ".",1) == 0)
 					{
 						find_dote = 0;
 					}
@@ -631,7 +617,6 @@ int cadastrar_paciente()
 				{
 					strcpy(registering_patient->email, email);
 				}
-				free(temp);
 			}while(confirm_email_typed == 1);
 
 			//REGRA PARA CAPTURAR DOENÇAS DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
@@ -817,6 +802,7 @@ int cadastrar_paciente()
 
 		}while(confirm_pacient_datas == 1);
 
+		to_JSON(registering_patient);
 		patient_SUS[patient_count] = *registering_patient;
 		free(registering_patient);
 	}
@@ -859,7 +845,7 @@ int pesquisar_paciente()
 		printf("Digite o nome do paciente: ");
 		ler_string(name_to_search, 60);
 		printf("\n");
-
+		system("clear");
 		for(int i = 0; i < patient_count; i++)
 		{
 			finding_pacient = strcmp(patient_SUS[i].nome, name_to_search) == 0 ? 0 : 1;
@@ -877,6 +863,10 @@ int pesquisar_paciente()
 		}
 		else
 		{
+			printf("          _______________________________________\n");
+			printf("         |                                       |\n");
+			printf("         |    Resultado da pesquisa por nome     |\n");
+			printf("         |_______________________________________|\n\n");
 			printf("NOME: %s\n", patient_SUS[pacient_finded_ix].nome);
 			printf("CNS: %s\n", patient_SUS[pacient_finded_ix].cns);
 			printf("IDADE: %d\n", patient_SUS[pacient_finded_ix].age);
@@ -1178,7 +1168,7 @@ int calculos_estatisticos()
 					printf("         |________________________________________|\n\n");
 					age_media = positive_pacient > 0 ? age_media / (float) positive_pacient : age_media;
 					printf("Foram encontrados um total de %d pacientes com resultado positivo para COVID-19.\n\n", positive_pacient);
-					printf("Media da idade corresponde a: %.2fkg\n\n", age_media);
+					printf("Media da idade corresponde a: %d anos.\n\n", (int)age_media);
 			}
 
 			else
@@ -1236,8 +1226,8 @@ int main(void) {
 		else
 		{	
 
-			logged_user = log_in();
-			//logged_user = 2;
+			//logged_user = log_in();
+			logged_user = 2;
 
 			if(logged_user > -1) 
 			{
