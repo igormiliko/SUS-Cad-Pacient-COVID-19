@@ -7,8 +7,30 @@
 #include <ctype.h>
 #include <malloc.h>
 #include <time.h>
-#include "WRITE_IN_JSON.h"
 
+typedef struct 
+{
+    char street[99];
+    char number[9];
+    char state[2];
+    char district[99];
+    char city[99];
+    char postal_code[9];
+} Adress;
+
+typedef struct 
+{	
+		char nome[60];
+		char cpf[14];
+		int age;
+		char born_date[11];
+		char email[120];
+		char disease[20];
+		char consult_data[11];
+		char phone_number[13];
+		char COVID_19[2];
+        Adress address;
+} Patient;
 
 
 int ler_string(char s[], int max)
@@ -143,12 +165,12 @@ static int sign_in()
 				printf("Digite 'CRM' para médico ou 'CRE' para Enfermeiro: ");
 				scanf("%s", user_conseil);
 				printf("\n");
-				to_compare = strncmp(user_conseil, "CRM", 4) == 0 || strncmp(user_conseil, "CRE", 4) == 0 ? 0 : 1;
+				to_compare = strncmp(user_conseil, "CRM", 3) == 0 || strncmp(user_conseil, "CRE", 3) == 0 ? 0 : 1;
 			}while(to_compare != 0);
 
 
 			int confirm_conseil;
-			if(strcmp(user_conseil, "CRM") == 0)
+			if(strncmp(user_conseil, "CRM", 3) == 0)
 			{	
 				do{
 					confirm_conseil = 0;
@@ -403,29 +425,73 @@ int log_in()
 
 int cadastrar_paciente() 
 {
-	int confirm_pacient_datas;
-	Patient *registering_patient = (Patient*)malloc(sizeof(Patient));
+	
 
 	printf("|------------------ CADASTRAR PACIENTE -----------------|\n\n");
-	if(registering_patient)
-	{	
-		do{
+
+		Patient registering_patient;
+
 			//a função ler_string aceita espaços
 			printf("Nome: ");
-			ler_string(registering_patient->nome, 60);
+			ler_string(registering_patient.nome, 60);
 			printf("\n");
+
+			printf("\nCadastrar endereço:\n");
+
+			int confirm_state;
+			do{
+				confirm_state = 1;
+				printf("Estado(Utilize a forma abreviada 'DF')? ");
+				scanf("%s", registering_patient.address.state);
+				printf("\n");
+				
+				int len = strlen(registering_patient.address.state);
+				if(len == 2)
+				{
+					confirm_state = isupper(registering_patient.address.state[0]) != 0 &&
+									isupper(registering_patient.address.state[1]) != 0 ? 0 : 1;
+				}
+			}while(confirm_state == 1);
+
+			printf("Rua: ");
+			ler_string(registering_patient.address.street, 99);
+			printf("\n");
+
+			printf("Número: ");
+			ler_string(registering_patient.address.number, 99);
+			printf("\n");
+
+			printf("Bairro: ");
+			ler_string(registering_patient.address.district, 99);
+			printf("\n");
+
+			printf("Cidade: ");
+			ler_string(registering_patient.address.city, 99);
+			printf("\n");
+
+
+			int correct_typed_cep;
+			do{
+				printf("Digite o cep do paciente no formato XXXXX-XXX: ");
+				ler_string(registering_patient.address.postal_code, 10);
+				printf("\n");
+
+				correct_typed_cep = strlen(registering_patient.address.postal_code) == 9 && 
+									strncmp(&registering_patient.address.postal_code[5], "-", 1) == 0 ? 0 : 1; 
+			}while(correct_typed_cep == 1);
+
 
 			// Capturar a data de nascimentio do paciente e calcular sua idade
 			int confirm_born_date = 0;
 			do{
 				printf("Data de nascimento:(__/__/__) ");
-				scanf("%s", registering_patient->born_date);
+				scanf("%s", registering_patient.born_date);
 				printf("\n");
-				//scanf("%d", &registering_patient->age);
-				int len = strlen(registering_patient->born_date);
+				//scanf("%d", &registering_patient.age);
+				int len = strlen(registering_patient.born_date);
 				
-				int const_bar = strcmp(&registering_patient->born_date[2], "/")  &&
-								strcmp(&registering_patient->born_date[5], "/")  ? 0 : 1;
+				int const_bar = strcmp(&registering_patient.born_date[2], "/")  &&
+								strcmp(&registering_patient.born_date[5], "/")  ? 0 : 1;
 
 				confirm_born_date = const_bar == 0 && len == 10 ? 0 : 1;
 
@@ -453,20 +519,20 @@ int cadastrar_paciente()
 					current_year = local->tm_year+1900;    
 
 					// Transformando o dia em inteiro
-					to_int[0] = registering_patient->born_date[0];
-					to_int[1] = registering_patient->born_date[1];
+					to_int[0] = registering_patient.born_date[0];
+					to_int[1] = registering_patient.born_date[1];
 					patient_born_day = atoi(to_int);
 
 					// Transformando o mês em inteiro
-					to_int[0] = registering_patient->born_date[3];
-					to_int[1] = registering_patient->born_date[4];
+					to_int[0] = registering_patient.born_date[3];
+					to_int[1] = registering_patient.born_date[4];
 					patient_born_month = atoi(to_int);
 
 					// Transformando o ano em inteiro
-					to_int[0] = registering_patient->born_date[6];
-					to_int[1] = registering_patient->born_date[7];
-					to_int[2] = registering_patient->born_date[8];
-					to_int[3] = registering_patient->born_date[9];
+					to_int[0] = registering_patient.born_date[6];
+					to_int[1] = registering_patient.born_date[7];
+					to_int[2] = registering_patient.born_date[8];
+					to_int[3] = registering_patient.born_date[9];
 					patient_born_year = atoi(to_int);
 					
 					// Calculando a idade do paciente
@@ -483,56 +549,47 @@ int cadastrar_paciente()
 					{
 						computing_age--;
 					}
-					registering_patient->age = computing_age;
-					printf("Idade: %d\n\n", registering_patient->age);
+					registering_patient.age = computing_age;
+					printf("Idade: %d\n\n", registering_patient.age);
 					
 				}
 
 			}while(confirm_born_date == 1);
-
-			// TODO
-			int exist_cpf;
-			int correct_typed_cpf;
-			do{
-				exist_cpf = 0;
-
-				printf("Digite o CPF do paciente no formato XXX.XXX.XXX-XX: ");
-				scanf("%s", registering_patient->cpf);
-				printf("\n");
-
-				correct_typed_cpf = strlen(registering_patient->cpf) == 14 ? 0 : 1; 
-
-				if(patient_count > 0)
-				{	
-					for(int i = 0; i < patient_count; i++)
-					{
-						if(strcmp(registering_patient->cpf, patient_SUS[i].cpf) == 0)
-						{
-							exist_cpf = 1;
-						}
-					}
-				}
-				if(exist_cpf == 1)
-				{
-					printf("Este CPF já está cadastrado!\n\n");
-				}
-			}while(exist_cpf == 1 || correct_typed_cpf == 1);
 
 			// REGRA PARA CAPTURAR O TELEFONE DO PACIENTE (XX)98590-8989
 			int confirm_phone_typed;
 			do
 			{
 				printf("Digite o número de telefone do paciente no formato (XX)9XXXX-XXXX: ");
-				scanf("%s", registering_patient->phone_number);
+				scanf("%s", registering_patient.phone_number);
 				printf("\n");
 
-				confirm_phone_typed = strlen(registering_patient->phone_number) == 14 ? 0 : 1;
+				confirm_phone_typed = strlen(registering_patient.phone_number) == 14 &&
+						              strncmp(&registering_patient.phone_number[0], "(", 1) == 0 &&
+						              strncmp(&registering_patient.phone_number[3], ")", 1) == 0 &&
+						              strncmp(&registering_patient.phone_number[4], "9", 1) == 0 &&
+						              strncmp(&registering_patient.phone_number[9], "-", 1) == 0 ? 0 : 1;
 				if(confirm_phone_typed == 1)
 				{
 					printf("Formato de telefone inválido!\n");
 				}
 
+
 			}while(confirm_phone_typed == 1);
+
+			// TODO
+			int correct_typed_cpf;
+			do{
+				printf("Digite o CPF do paciente no formato XXX.XXX.XXX-XX: ");
+				scanf("%s", registering_patient.cpf);
+				printf("\n");
+
+				correct_typed_cpf = strlen(registering_patient.cpf) == 14 && 
+									strncmp(&registering_patient.cpf[3], ".", 1) == 0 && 
+									strncmp(&registering_patient.cpf[7], ".", 1) == 0 &&
+									strncmp(&registering_patient.cpf[11], "-", 1) == 0 ? 0 : 1; 
+			}while(correct_typed_cpf == 1);
+
 
 			// REGRA PARA CAPTURAR O EMAIL DO PACIENTE E VERIFICAR SE ELE EXISTE NO BANCO DE DADOS
 			int confirm_email_typed = 1;
@@ -560,7 +617,7 @@ int cadastrar_paciente()
 				}
 				else
 				{
-					strcpy(registering_patient->email, email);
+					strcpy(registering_patient.email, email);
 				}
 			}while(confirm_email_typed == 1);
 
@@ -584,28 +641,28 @@ int cadastrar_paciente()
 					switch (atoi(typed_number))
 					{
 					case 1:  
-						strcpy(registering_patient->disease, "Hipertensão");
+						strcpy(registering_patient.disease, "Hipertensão");
 						break;
 					case 2:  
-						strcpy(registering_patient->disease, "Diabetes");
+						strcpy(registering_patient.disease, "Diabetes");
 						break;
 					case 3:  
-						strcpy(registering_patient->disease, "Obesidade");
+						strcpy(registering_patient.disease, "Obesidade");
 						break;
 					case 4:  
-						strcpy(registering_patient->disease, "Asma");
+						strcpy(registering_patient.disease, "Asma");
 						break;
 					case 5:  
-						strcpy(registering_patient->disease, "AIDS");
+						strcpy(registering_patient.disease, "AIDS");
 						break;
 					case 6:  
-						strcpy(registering_patient->disease, "Câncer");
+						strcpy(registering_patient.disease, "Câncer");
 						break;
 					case 7:  
-						strcpy(registering_patient->disease, "Depressão");
+						strcpy(registering_patient.disease, "Depressão");
 						break;
 					case 8:  
-						strcpy(registering_patient->disease, "Tuberculose");
+						strcpy(registering_patient.disease, "Tuberculose");
 						break;
 					
 					default:
@@ -614,22 +671,29 @@ int cadastrar_paciente()
 				}
 			}while(confirm_disease == 1);
 
-			
+			// Alghoritimo para confirmar se o usuário digitou o resultado de COVID-19
+			// no formato correto.
+			int type_confirm_plus_minus;
+			do{
+				printf("Resultado COVID-19: +/- ");
+				scanf("%s", registering_patient.COVID_19);
+				printf("\n");
 
-			
-
+				type_confirm_plus_minus = strcmp(registering_patient.COVID_19, "+") == 0 || 
+								strcmp(registering_patient.COVID_19, "-") == 0 ? 0 : 1;
+			}while(type_confirm_plus_minus == 1);
 
 			// Algoritimo para confirmar se o usuário digitou a data no formato correto
 			int confirm_type_date;
 			do{
-				printf("Data do diagnóstico(__/__/__): ");
-				scanf("%s",registering_patient->consult_data);
+				printf("Data do diagnósticode COVID-19(__/__/__): ");
+				scanf("%s",registering_patient.consult_data);
 				printf("\n");
 
-				int len = strlen(registering_patient->consult_data);
+				int len = strlen(registering_patient.consult_data);
 				
-				int const_bar = strcmp(&registering_patient->consult_data[2], "/")  &&
-								strcmp(&registering_patient->consult_data[5], "/")  ? 0 : 1;
+				int const_bar = strcmp(&registering_patient.consult_data[2], "/")  &&
+								strcmp(&registering_patient.consult_data[5], "/")  ? 0 : 1;
 
 				confirm_type_date = const_bar == 0 && len == 10 ? 0 : 1;
 
@@ -638,50 +702,72 @@ int cadastrar_paciente()
 					printf("Formato inválido!!\n");
 				}
 			}while(confirm_type_date == 1);
-
-			// Alghoritimo para confirmar se o usuário digitou o resultado de COVID-19
-			// no formato correto.
-			int type_confirm_plus_minus;
-			do{
-				printf("Resultado COVID-19: +/- ");
-				scanf("%s", registering_patient->COVID_19);
-				printf("\n");
-
-				type_confirm_plus_minus = strcmp(registering_patient->COVID_19, "+") == 0 || 
-								strcmp(registering_patient->COVID_19, "-") == 0 ? 0 : 1;
-			}while(type_confirm_plus_minus == 1);
-			
 			
 			system("clear");
-			char confirm_char;
-			do{
-				printf("Nome: %s\n",registering_patient->nome);
-				printf("CPF: %s\n",registering_patient->cpf);
-				printf("Data de Nascimento: %s\n",registering_patient->born_date);
-				printf("Idade: %d\n",registering_patient->age);
-				printf("Email: %s\n",registering_patient->email);
-				printf("Número de celular: %s\n",registering_patient->phone_number);
-				printf("Data do exame de COVID: %s\n",registering_patient->consult_data);
-				printf("Resultado do exame de COVID: %s\n",registering_patient->COVID_19);
-				printf("Principal doença crônica: %s\n",registering_patient->disease);
-				printf("Os dados do paciente estão corretos? Digite s/n -> ");
-				scanf("%s", &confirm_char);
-				printf("\n");
 
-				confirm_pacient_datas = strcmp(&confirm_char, "s") == 0 || strcmp(&confirm_char, "n") == 0 ? 0 : 1;
+	//Gravar em arquivo .json
+	char age[2]; sprintf(age, "%d", registering_patient.age);
 
-			}while(confirm_pacient_datas == 1);
-
-			confirm_pacient_datas = strcmp(&confirm_char, "s") == 0 ? 0 : 1;
-
-		}while(confirm_pacient_datas == 1);
-
-		to_JSON(registering_patient);
-		patient_SUS[patient_count] = *registering_patient;
-		free(registering_patient);
+  	FILE *fp;
+    fp = fopen("patient.json","a");
+	int success_close;
+    
+	// Checar se não ocorreu nenhum erro ao abrir o arquivo
+	if(fp == NULL)
+	{
+		printf("\nErro ao abrir o arquivo!\n");
 	}
-	system("clear");
-	patient_count++;
+	else{
+		//Registrando pacientes que estão em grupo de risco
+		if(registering_patient.age > 65)
+		{
+			FILE *rf;
+			rf = fopen("risk.json","w");
+			int success_close;
+	
+			if(rf == NULL)
+			{
+				printf("\nErro ao abrir o arquivo!\n");
+			}
+			else
+			{
+				// Formatação para JSON
+				fputs("\n{\n", rf);
+					fputs("    \"name\":", rf); fputs("\"", rf); fputs(registering_patient.nome, rf); fputs("\",\n", rf);
+					fputs("    \"Age\":", rf); fputs("\"", rf); fputs(age, rf); fputs("\",\n", rf);
+					fputs("    \"CEP\":", rf); fputs("\"", rf); fputs(registering_patient.address.postal_code, rf); fputs("\"\n", rf);
+				fputs("},\0", rf);
+
+				fclose(rf);
+
+			}
+		}
+		// Formatação para JSON
+        fputs("\n{\n", fp);
+            fputs("    \"name\":", fp); fputs("\"", fp); fputs(registering_patient.nome, fp); fputs("\",\n", fp);
+            fputs("    \"CPF\":", fp); fputs("\"", fp); fputs(registering_patient.cpf, fp); fputs("\",\n", fp);
+            fputs("    \"phone_number\":", fp); fputs("\"", fp); fputs(registering_patient.phone_number, fp); fputs("\",\n", fp);
+				fputs("    \"Adress\": {\n", fp); 
+					fputs("        \"street\":", fp); fputs("\"", fp); fputs(registering_patient.address.street, fp); fputs("\",\n", fp);
+					fputs("        \"number\":", fp); fputs("\"", fp); fputs(registering_patient.address.number, fp); fputs("\",\n", fp);
+					fputs("        \"district\":", fp); fputs("\"", fp); fputs(registering_patient.address.district, fp); fputs("\",\n", fp);
+					fputs("        \"city\":", fp); fputs("\"", fp); fputs(registering_patient.address.city, fp); fputs("\",\n", fp);
+					fputs("        \"state\":", fp); fputs("\"", fp); fputs(registering_patient.address.state, fp); fputs("\",\n", fp);
+					fputs("        \"postal_code\":", fp); fputs("\"", fp); fputs(registering_patient.address.postal_code, fp); fputs("\"\n", fp);
+				fputs("    },\n", fp);
+            fputs("    \"age\":", fp); fputs("\"", fp); fputs(age, fp); fputs("\",\n", fp);
+            fputs("    \"born_date\":", fp); fputs("\"", fp); fputs(registering_patient.born_date, fp); fputs("\",\n", fp);
+            fputs("    \"email\":", fp); fputs("\"", fp); fputs(registering_patient.email, fp); fputs("\",\n", fp);
+            fputs("    \"disease\":", fp); fputs("\"", fp); fputs(registering_patient.disease, fp); fputs("\",\n", fp);
+            fputs("    \"consult_date\":", fp); fputs("\"", fp); fputs(registering_patient.consult_data, fp); fputs("\",\n", fp);
+            fputs("    \"COVID_19\":", fp); fputs("\"", fp); fputs(registering_patient.COVID_19, fp); fputs("\"\n", fp);
+        fputs("},", fp);
+	}
+    success_close = fclose(fp);
+
+	if(success_close == 0) printf("\nPaciente salvo com sucesso\n");
+	else printf("\nErro ao salvar paciente\n");
+
 	return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -706,8 +792,8 @@ int main(void) {
 		else
 		{	
 
-			logged_user = log_in();
-			//logged_user = 2;
+			//logged_user = log_in();
+			logged_user = 2;
 
 			if(logged_user > -1) 
 			{
@@ -715,7 +801,7 @@ int main(void) {
 					printf("                                           \n");
 					printf(" NOME: %s         ", cad_user[logged_user].nick_name);
 
-					if(strcmp(cad_user[logged_user].CRM, "") = 0)
+					if(strcmp(cad_user[logged_user].CRM, "") == 0)
 					{
 						printf("  CRM: %s\n", cad_user[logged_user].CRM);
 					}
@@ -727,7 +813,7 @@ int main(void) {
 				do{
 					printf("          _____________________________________________________\n");
 					printf("         |                                                     |\n");
-					printf("         |    Sistema de cadastro e pesquisa  de pacientes     |\n");
+					printf("         |    Sistema de cadastro de pacientes com  COVID-19   |\n");
 					printf("         |_____________________________________________________|\n\n");
 					char program_action[1];
 					int confirm_type_program_action;
