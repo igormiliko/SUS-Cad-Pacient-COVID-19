@@ -83,6 +83,8 @@ float *strongness_pass(char *str, float *pn)
 		}
     }
 
+	if(strlen(str) < 8) n -= 100;
+
     *pn = n / 10;
 	return 0;
 }
@@ -281,7 +283,8 @@ static int sign_in()
 					strcpy(compare_pass, getpass("Confirme sua senha: "));
 					printf("\n");
 
-					
+				if(strlen(registering_user->senha) < 8) printf("\nPelo menos 8 caracteres!!\n");
+
 				if(strong_ix > 0.325)
 				{	
 					system("clear");
@@ -773,7 +776,7 @@ int cadastrar_paciente()
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(void) {
-	
+	system("clear");
 	int to_cycle = 1;
 
 	do
@@ -792,8 +795,8 @@ int main(void) {
 		else
 		{	
 
-			//logged_user = log_in();
-			logged_user = 2;
+			logged_user = log_in();
+			//logged_user = 2;
 
 			if(logged_user > -1) 
 			{
@@ -801,7 +804,7 @@ int main(void) {
 					printf("                                           \n");
 					printf(" NOME: %s         ", cad_user[logged_user].nick_name);
 
-					if(strcmp(cad_user[logged_user].CRM, "") == 0)
+					if(strncmp(cad_user[logged_user].CRM, "CRM", 3) == 0)
 					{
 						printf("  CRM: %s\n", cad_user[logged_user].CRM);
 					}
