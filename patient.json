@@ -1,0 +1,20 @@
+
+{
+    "name":"dassda",
+    "CPF":"046.090.621-60",
+    "phone_number":"(99)99999-999+",
+    "Adress": {
+        "street":"sadsad",
+        "number":"sad",
+        "district":"ad",
+        "city":"asd",
+        "state":"SDad",
+        "postal_code":"19569-600"
+    },
+    "age":"1617",
+    "born_date":"04/04/0404",
+    "email":"@,.",
+    "disease":"Diabetes",
+    "consult_date":"04/04/0404",
+    "COVID_19":"+"
+},
